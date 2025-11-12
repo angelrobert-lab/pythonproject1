@@ -1,0 +1,117 @@
+<view class="profile-container">
+  <!-- 顶部导航 -->
+  <view class="profile-header">
+    <view class="back-btn" bindtap="goBack">
+      <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJIN00xMiAxOWwtNy03IDctNyI+PC9wYXRoPjwvc3ZnPg==" />
+    </view>
+    <text class="header-title">个人中心</text>
+  </view>
+  
+  <!-- 用户信息卡片 -->
+  <view class="profile-card">
+    <view class="avatar-section" bindtap="changeAvatar">
+      <image class="avatar" src="{{profile.avatar || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMyYzdiZTUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPjwvc3ZnPg=='}}" mode="aspectFill" />
+      <text class="edit-avatar">点击更换头像</text>
+    </view>
+    
+    <!-- 个人信息表单 -->
+    <view class="form-section">
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input 
+          class="form-input" 
+          placeholder="请输入昵称（2-16位汉字/英文/数字）" 
+          maxlength="16"
+          value="{{profile.nickname}}" 
+          bindinput="onNicknameInput"
+        />
+        <text class="error-text" wx:if="{{nicknameError}}">{{nicknameError}}</text>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">邮箱</text>
+        <input 
+          class="form-input" 
+          type="email"
+          placeholder="请输入邮箱（以.com结尾）" 
+          value="{{profile.email}}" 
+          bindinput="onEmailInput"
+        />
+        <text class="error-text" wx:if="{{emailError}}">{{emailError}}</text>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">姓名</text>
+        <input 
+          class="form-input" 
+          placeholder="请输入姓名" 
+          value="{{profile.name}}" 
+          bindinput="onNameInput"
+        />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">性别</text>
+        <radio-group class="gender-group" bindchange="onGenderChange">
+          <label class="radio-label">
+            <radio value="male" checked="{{profile.gender === 'male'}}" color="#2c7be5" />
+            <text>男</text>
+          </label>
+          <label class="radio-label">
+            <radio value="female" checked="{{profile.gender === 'female'}}" color="#2c7be5" />
+            <text>女</text>
+          </label>
+        </radio-group>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">年龄</text>
+        <input 
+          class="form-input" 
+          type="number" 
+          placeholder="请输入年龄" 
+          value="{{profile.age}}" 
+          bindinput="onAgeInput"
+        />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">民族</text>
+        <input 
+          class="form-input" 
+          placeholder="请输入民族" 
+          value="{{profile.position}}" 
+          bindinput="onPositionInput"
+        />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">联系电话</text>
+        <input 
+          class="form-input" 
+          placeholder="请输入联系电话" 
+          value="{{profile.specialty}}" 
+          bindinput="onSpecialtyInput"
+        />
+      </view>
+      
+      <button class="save-btn" bindtap="saveProfile">保存个人信息</button>
+    </view>
+  </view>
+  
+  <!-- 意见反馈 -->
+  <view class="feedback-card">
+    <text class="section-title">意见反馈</text>
+    <textarea 
+      class="feedback-input" 
+      placeholder="请输入您的宝贵意见或建议..." 
+      value="{{feedback}}" 
+      bindinput="onFeedbackInput"
+      maxlength="500"
+    />
+    <view class="feedback-footer">
+      <text class="char-count">{{feedback.length}}/500</text>
+      <button class="submit-btn" bindtap="submitFeedback">提交反馈</button>
+    </view>
+  </view>
+</view>

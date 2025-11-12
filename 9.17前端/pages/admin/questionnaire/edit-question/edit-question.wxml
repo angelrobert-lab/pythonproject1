@@ -1,0 +1,156 @@
+<!-- pages/admin/questionnaire/edit-question/edit-question.wxml -->
+
+<view class="container">
+
+  <!-- 合并的编辑区域 -->
+  <view class="edit-container">
+    
+    <!-- 问题标题区域 -->
+    <view class="section-header">
+      <text class="section-title">问题标题</text>
+      <button class="add-blank-btn" bindtap="insertBlank" wx:if="{{question.type === 'blank'}}">插入填空</button>
+    </view>
+    <input
+      class="title-input"
+      placeholder="请输入问题标题"
+      bindinput="onTitleInput"
+      value="{{question.title}}"
+    />
+    
+    <!-- 图片上传区域 -->
+    <view class="section-header" wx:if="{{question.type === 'single' || question.type === 'multiple'}}">
+      <text class="section-title">上传图片</text>
+    </view>
+    <view class="upload-container" wx:if="{{question.type === 'single' || question.type === 'multiple'}}">
+      <view class="upload-btn" bindtap="uploadImage">
+        <image class="upload-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTk5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMTIiIHkxPSIzMCIgeDI9IjM2IiB5Mj0iMzAiLz48bGluZSB4MT0iMjQiIHkxPSIxNiIgeDI9IjI0IiB5Mj0iMzAiLz48cGF0aCBkPSJNMjQgOGgtMnY0aDR2LTRoLTJ6bTAgMThoLTJ2NGg0di00aC0yek00OCAyNGMwIDEyLjEyLTkuODYgMjItMjIgMjJzLTIyLTkuODYtMjItMjIgOS44Ni0yMiAyMi0yMiAyMiA5Ljg2IDIyIDIyem0tMjQtOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptMCAxOGMzLjMxNCAwIDYtMi42ODYgNi02cy0yLjY4Ni02LTYtNi02IDIuNjg2LTYgNiAyLjY4NiA2IDYgNnoiLz48L3N2Zz4="></image>
+      </view>
+      <text class="upload-text">点击上传图片</text>
+      <image wx:if="{{question.imageUrl}}" src="{{question.imageUrl}}" mode="aspectFit" class="uploaded-image"></image>
+    </view>
+    
+    <!-- 选项区域 -->
+    <view class="section-header" wx:if="{{question.type === 'single' || question.type === 'multiple'}}">
+      <text class="section-title">选项列表</text>
+      <button class="add-option-btn" bindtap="addOption">+ 添加选项</button>
+    </view>
+    <view class="options-list" wx:if="{{question.type === 'single' || question.type === 'multiple'}}">
+      <view wx:for="{{question.options}}" wx:for-index="optionIndex" wx:key="optionIndex" class="option-item">
+        <input class="option-letter-input" value="{{letters[optionIndex]}}" disabled />
+        <!-- 选项输入框 -->
+        <input
+          class="option-input"
+          placeholder="请输入选项内容"
+          bindinput="onOptionInput"
+          data-index="{{optionIndex}}"
+          value="{{item}}"
+        />
+        <!-- 删除按钮 -->
+        <view class="delete-btn" bindtap="deleteOption" data-index="{{optionIndex}}">
+          <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMyIgeTE9IjYiIHgyPSIyMSIgeTI9IjYiLz48bGluZSB4MT0iMTAiIHkxPSIxMCIgeDI9IjEwIiB5Mj0iMTgiLz48bGluZSB4MT0iMTQiIHkxPSIxMCIgeDI9IjE0IiB5Mj0iMTgiLz48cGF0aCBkPSJNMTkgNnYxNGEyIDIgMCAwIDEtMiAySDdhMiAyIDAgMCAxLTItMlY2bTMgMCAwLTE0aDhsMCAxNCIvPjwvc3ZnPg==" class="delete-icon" />
+        </view>
+      </view>
+    </view>
+    
+    <!-- 填空题区域 -->
+    <view class="section-header" wx:if="{{question.type === 'blank'}}">
+      <text class="section-title">填空回答</text>
+    </view>
+    <view class="blanks-list" wx:if="{{question.type === 'blank'}}">
+      <view wx:for="{{question.blanks}}" wx:for-index="blankIndex" wx:key="blankIndex" class="blank-item">
+        <text class="blank-label">回答{{blankIndex + 1}}：</text>
+        <input
+          class="blank-input"
+          placeholder="请输入标准答案"
+          bindinput="onBlankInput"
+          data-index="{{blankIndex}}"
+          value="{{item}}"
+        />
+        <!-- 删除按钮 -->
+        <view class="delete-btn" bindtap="deleteBlank" data-index="{{blankIndex}}">
+          <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMyIgeTE9IjYiIHgyPSIyMSIgeTI9IjYiLz48bGluZSB4MT0iMTAiIHkxPSIxMCIgeDI9IjEwIiB5Mj0iMTgiLz48bGluZSB4MT0iMTQiIHkxPSIxMCIgeDI9IjE0IiB5Mj0iMTgiLz48cGF0aCBkPSJNMTkgNnYxNGEyIDIgMCAwIDEtMiAySDdhMiAyIDAgMCAxLTItMlY6bTMgMCAwLTE0aDlsMCAxNCIvPjwvc3ZnPg==" class="delete-icon" />
+        </view>
+      </view>
+    </view>
+    
+    <!-- 问答题回答区域 -->
+    <view class="section-header" wx:if="{{question.type === 'text'}}">
+      <text class="section-title">问题回答</text>
+    </view>
+    <textarea
+      class="answer-textarea"
+      placeholder="请输入问题回答"
+      bindinput="onAnswerInput"
+      value="{{question.answer}}"
+      wx:if="{{question.type === 'text'}}"
+    />
+    
+    <!-- 勾选题编辑区域 -->
+    <block wx:if="{{question.type === 'matrix'}}">
+      <!-- 图片上传区域 -->
+      <view class="section-header">
+        <text class="section-title">上传图片</text>
+      </view>
+      <view class="upload-container">
+        <view class="upload-btn" bindtap="uploadImage">
+          <image class="upload-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTk5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMTIiIHkxPSIzMCIgeDI9IjM2IiB5Mj0iMzAiLz48bGluZSB4MT0iMjQiIHkxPSIxNiIgeDI9IjI0IiB5Mj0iMzAiLz48cGF0aCBkPSJNMjQgOGgtMnY0aDR2LTRoLTJ6bTAgMWh2NGgtNHYtNGg0em0wIDF2NGgtNHYtNGg0em0tMiA0aDR2LTRoLTJ6bTAgNGgtMnY0aDR2LTRoLTJ6bTAgNGgtMnY0aDR2LTRoLTJ6TTI0IDQ0Yy0xMS4wNSAwLTIwLTguOTUtMjAtMjBzOC45NS0yMCAyMC0yMCAyMCA4Ljk1IDIwIDIwLTguOTUgMjAtMjAgMjB6bTAtMzZjLTguODIgMC0xNiA3LjE4LTE2IDE2czcuMTggMTYgMTYgMTYgMTYtNy4xOCAxNi0xNi03LjE4LTE2LTE2LTE2eiIvPjwvc3ZnPg=="></image>
+        </view>
+        <text class="upload-text">点击上传图片</text>
+        <image wx:if="{{question.imageUrl}}" src="{{question.imageUrl}}" mode="aspectFit" class="uploaded-image"></image>
+      </view>
+      
+      <!-- 矩阵编辑区域 -->
+      <view class="section-header matrix-section">
+        <text class="section-title">创建表格</text>
+        <view class="matrix-btn-container">
+          <button class="add-option-btn" bindtap="addRow">+ 添加行</button>
+          <button class="add-option-btn" bindtap="addCol">+ 添加列</button>
+        </view>
+      </view>
+      
+      <view class="matrix-edit-container">
+        <!-- 左上角固定单元格 -->
+        <view class="fixed-corner"></view>
+        
+        <!-- 列标题区域 (可横向滚动) -->
+        <scroll-view class="matrix-header-scroll" scroll-x="{{true}}" scroll-left="{{scrollLeft}}" bindscroll="onHeaderScroll">
+          <view class="matrix-header">
+            <view wx:for="{{question.matrix.colHeaders}}" wx:key="col-{{index}}" class="header-cell">
+              <input class="col-input" placeholder="列{{index+1}}" value="{{item}}" bindinput="onColHeaderInput" data-index="{{index}}" />
+              <view class="delete-btn" bindtap="deleteCol" data-index="{{index}}">
+                <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMyIgeTE9IjYiIHgyPSIyMSIgeTI9IjYiLz48bGluZSB4MT0iMTAiIHkxPSIxMCIgeDI9IjEwIiB5Mj0iMTgiLz48bGluZSB4MT0iMTQiIHkxPSIxMCIgeDI9IjE0IiB5Mj0iMTgiLz48cGF0aCBkPSJNMTkgNnYxNGEyIDIgMCAwIDEtMiAySDdhMiAyIDAgMCAxLTItMlY6bTMgMCAwLTE0aDhsMCAxNCIvPjwvc3ZnPg==" class="delete-icon"></image>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+        
+        <!-- 行标题和内容区域 (可纵向滚动) -->
+        <scroll-view class="matrix-body-scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" bindscroll="onBodyScroll">
+          <view wx:for="{{question.matrix.rowHeaders}}" wx:key="row-{{index}}" class="matrix-row">
+            <!-- 行标题 -->
+            <view class="row-header">
+              <input class="row-input" placeholder="行{{index+1}}" value="{{item}}" bindinput="onRowHeaderInput" data-index="{{index}}" />
+              <view class="delete-btn" bindtap="deleteRow" data-index="{{index}}">
+                <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMyIgeTE9IjYiIHgyPSIyMSIgeTI9IjYiLz48bGluZSB4MT0iMTAiIHkxPSIxMCIgeDI9IjEwIiB5Mj0iMTgiLz48bGluZSB4MT0iMTQiIHkxPSIxMCIgeDI9IjE0IiB5Mj0iMTgiLz48cGF0aCBkPSJNMTkgNnYxNGEyIDIgMCAwIDEtMiAySDdhMiAyIDAgMCAxLTItMlY6bTMgMCAwLTE0aDlsMCAxNCIvPjwvc3ZnPg==" class="delete-icon"></image>
+              </view>
+            </view>
+            
+            <!-- 单元格区域 (可横向滚动) -->
+            <scroll-view class="matrix-cells-scroll" scroll-x="{{true}}" scroll-left="{{scrollLeft}}" bindscroll="onCellsScroll">
+              <view class="matrix-row-cells">
+                <view wx:for="{{question.matrix.colHeaders}}" wx:for-item="colItem" wx:for-index="colIndex" wx:key="colIndex" class="matrix-cell">
+                  <view class="checkbox {{question.matrix.selectedCells[index][colIndex] ? 'checked' : ''}}" bindtap="toggleMatrixCell" data-row-index="{{index}}" data-col-index="{{colIndex}}"></view>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </scroll-view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 保存按钮 -->
+  <view class="save-container">
+    <button class="save-btn" bindtap="saveQuestion">保存问题</button>
+  </view>
+</view>

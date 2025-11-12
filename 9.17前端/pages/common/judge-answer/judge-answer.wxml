@@ -1,0 +1,46 @@
+<!-- pages/common/judge-answer/judge-answer.wxml -->
+<view class="container">
+  <!-- 顶部搜索 -->
+  <view class="header">
+    <view class="search-box">
+      <image src="/images/search.png" class="search-icon" bindtap="triggerSearch"></image>
+      <input 
+        placeholder="搜索问卷名称"
+        placeholder-class="placeholder"
+        value="{{searchValue}}"
+        bindinput="onSearch"
+      />
+    </view>
+  </view>
+
+  <!-- 问卷列表 -->
+  <scroll-view class="list-container" scroll-y>
+    <!-- 空状态 -->
+    <view wx:if="{{showEmpty}}" class="empty-state">
+      <image src="/images/empty.png" class="empty-image"></image>
+      <text class="empty-text">暂无未批阅的问卷</text>
+    </view>
+
+    <!-- 问卷列表 -->
+    <view wx:for="{{questionnaires}}" wx:key="id" class="list-item">
+      <view class="item-header">
+        <text class="item-name">{{item.name}}</text>
+        <view class="item-status {{item.status === '未批阅' ? 'unjudged' : 'judged'}}">
+          {{item.status}}
+        </view>
+      </view>
+      
+      <view class="item-meta">
+        <text>填写时间: {{item.finishedAt}}</text>
+      </view>
+      
+      <view class="item-actions">
+        <button class="action-btn judge" bindtap="judgeQuestionnaire" data-fid="{{item.finishedId || item.id}}">批阅</button>
+        <button class="action-btn delete" bindtap="deleteQuestionnaire" data-fid="{{item.finishedId || item.id}}">删除</button>
+      </view>
+      <view class="user-meta">
+        <text>作答用户：{{item.userNickname || '未知'}}（{{item.userEmail || '未知'}}）</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

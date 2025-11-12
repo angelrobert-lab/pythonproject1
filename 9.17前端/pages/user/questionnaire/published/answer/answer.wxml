@@ -1,0 +1,411 @@
+<view class="container">
+
+<!-- 加载状态 -->
+<view wx:if="{{loading}}" class="loading-container">
+  <image src="/images/empty.png" class="loading-icon"></image>
+  <text>加载问卷中...</text>
+</view>
+
+<!-- 问卷内容 -->
+<block wx:else>
+  <!-- 顶部进度条 -->
+  <view class="progress-container">
+    <view class="progress-bar">
+      <view class="progress-active" style="{{'width:' + ((currentQuestionIndex + 1) / questionnaire.questions.length * 100) + '%;'}}"></view>
+    </view>
+    <text class="progress-text">{{currentQuestionIndex + 1}}/{{questionnaire.questions.length}}</text>
+  </view>
+
+  <!-- 问卷标题和描述 -->
+  <view class="questionnaire-header section-card">
+    <text class="title">{{questionnaire.name}}</text>
+    <text class="description">{{questionnaire.description}}</text>
+  </view>
+
+  <!-- 问题内容 -->
+  <view class="question-content">
+    <view class="question-card section-card">
+      <view class="question-header">
+        <text class="question-index">Q{{currentQuestionIndex + 1}}</text>
+        <text class="question-type">
+          <block wx:if="{{questionnaire.questions[currentQuestionIndex].type === 'single'}}">(单选题)</block>
+          <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'multiple'}}">(多选题)</block>
+          <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'text'}}">(问答题)</block>
+          <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'draw'}}">
+            <block wx:if="{{questionnaire.questions[currentQuestionIndex].subType === 'pattern'}}">(画图案)</block>
+            <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === '3d'}}">(画立体图)</block>
+            <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'clock'}}">(画钟表)</block>
+            <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'connect'}}">(连线题)</block>
+            <block wx:else>(画图题)</block>
+          </block>
+          <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'matrix'}}">(勾选题)</block>
+        </text>
+      </view>
+      <text class="question-title">{{questionnaire.questions[currentQuestionIndex].title}}</text>
+      <text wx:if="{{questionnaire.questions[currentQuestionIndex].moduleName}}" class="module-tag">所属模块：{{questionnaire.questions[currentQuestionIndex].moduleName}}</text>
+
+      <!-- 根据问题类型展示不同的内容 -->
+
+      <!-- 单选题 -->
+      <block wx:if="{{questionnaire.questions[currentQuestionIndex].type === 'single'}}">
+        <!-- 显示上传的图片 -->
+        <view wx:if="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" class="example-image-container">
+          <image
+            src="{{questionnaire.questions[currentQuestionIndex].imageUrl}}"
+            mode="aspectFit"
+            class="example-image"
+          />
+        </view>
+        <view class="options">
+          <view wx:for="{{questionnaire.questions[currentQuestionIndex].options}}" wx:key="index" class="option-item" bindtap="selectOption" data-index="{{index}}">
+            <view class="radio {{questionnaire.questions[currentQuestionIndex].selectedOption === index ? 'checked' : ''}}">
+              <view class="dot"></view>
+            </view>
+            <input class="option-letter-input" value="{{letters[index]}}" disabled />
+            <view class="option-text-container">
+              <text class="option-text">{{item.content}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 多选题 - 与admin预览页面样式一致 -->
+      <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'multiple'}}">
+        <!-- 显示上传的图片 -->
+        <view wx:if="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" class="example-image-container">
+          <image
+            src="{{questionnaire.questions[currentQuestionIndex].imageUrl}}"
+            mode="aspectFit"
+            class="example-image"
+          />
+        </view>
+        <view class="options">
+          <view wx:for="{{questionnaire.questions[currentQuestionIndex].options}}" wx:key="index" class="option-item" bindtap="selectMultipleOption" data-index="{{index}}">
+            <view class="checkbox {{selectedOptionsMap[index] ? 'checked' : ''}}"></view>
+            <input class="option-letter-input" value="{{letters[index]}}" disabled />
+            <view class="option-text-container">
+              <text class="option-text">{{item.content}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 填空题：可输入回答内容 -->
+      <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'blank'}}">
+        <view class="blanks-answer-container">
+          <view wx:for="{{questionnaire.questions[currentQuestionIndex].blanks}}" wx:for-item="blank" wx:for-index="blankIndex" wx:key="blankIndex" class="blank-answer-item">
+            <text class="blank-label">回答{{blankIndex + 1}}：</text>
+            <input class="blank-input" type="text" value="{{blank || ''}}" bindinput="onBlankInput" data-index="{{blankIndex}}" placeholder="请输入答案..." />
+          </view>
+        </view>
+      </block>
+
+      <!-- 勾选题展示 -->
+      <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'matrix'}}">
+        <!-- 图片上传区域 -->
+        <view class="section-header">
+          <text class="section-title">题目图片</text>
+        </view>
+        <view class="upload-container">
+          <image wx:if="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" src="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" mode="aspectFit" class="uploaded-image"></image>
+          <view wx:else class="no-image"></view>
+        </view>
+
+        <!-- 矩阵编辑区域 -->
+        <view class="section-header matrix-section">
+          <text class="section-title">勾选题表格</text>
+        </view>
+        <view class="matrix-edit-container">
+          <!-- 左上角固定单元格 -->
+          <view class="fixed-corner"></view>
+
+          <!-- 列标题区域 (可横向滚动) -->
+          <scroll-view class="matrix-header-scroll" scroll-x="{{true}}" scroll-left="{{scrollLeft}}" bindscroll="onHeaderScroll">
+            <view class="matrix-header">
+              <view wx:for="{{questionnaire.questions[currentQuestionIndex].matrix.colHeaders}}" wx:key="col-{{index}}" class="header-cell">
+                <text>{{item}}</text>
+              </view>
+            </view>
+          </scroll-view>
+
+          <!-- 行标题和内容区域 (可纵向滚动) -->
+          <scroll-view class="matrix-body-scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" bindscroll="onBodyScroll">
+            <view wx:for="{{questionnaire.questions[currentQuestionIndex].matrix.rowHeaders}}" wx:key="row-{{index}}" class="matrix-row">
+              <!-- 行标题 -->
+              <view class="row-header">
+                <text>{{item}}</text>
+              </view>
+
+              <!-- 单元格区域 (可横向滚动) -->
+              <scroll-view class="matrix-cells-scroll" scroll-x="{{true}}" scroll-left="{{scrollLeft}}" bindscroll="onCellsScroll">
+                <view class="matrix-row-cells">
+                  <view wx:for="{{questionnaire.questions[currentQuestionIndex].matrix.colHeaders}}" wx:for-item="colItem" wx:for-index="colIndex" wx:key="colIndex" class="matrix-cell" bindtap="toggleMatrixCell" data-row-index="{{index}}" data-col-index="{{colIndex}}">
+                    <view class="checkbox {{questionnaire.questions[currentQuestionIndex].matrix.selectedCells[index][colIndex] ? 'checked' : ''}}" style="margin:0;"></view>
+
+</view>
+                </view>
+              </scroll-view>
+            </view>
+          </scroll-view>
+        </view>
+      </block>
+
+      <!-- 问答题：显示回答内容 -->
+      <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'text'}}">
+        <view class="text-answer-container">
+          <textarea class="text-input" bindinput="onTextAnswerInput" value="{{questionnaire.questions[currentQuestionIndex].answer || ''}}" placeholder="请输入您的答案..."></textarea>
+        </view>
+      </block>
+
+      <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'draw'}}">
+        <!-- 画钟表题：显示提示句、示例图片和可交互画板 -->
+        <block wx:if="{{questionnaire.questions[currentQuestionIndex].subType === 'clock'}}">
+          <!-- 显示提示句 -->
+          <view class="draw-prompt-container">
+            <text class="prompt-title">提示句：</text>
+            <text class="prompt-content">请画出{{questionnaire.questions[currentQuestionIndex].hour || 'X'}}点{{questionnaire.questions[currentQuestionIndex].timeRelation || '过'}}{{questionnaire.questions[currentQuestionIndex].minute || 'X'}}分</text>
+            <view class="prompt-options">
+              <text wx:if="{{questionnaire.questions[currentQuestionIndex].showOutline}}" class="option-tag">轮廓</text>
+              <text wx:if="{{questionnaire.questions[currentQuestionIndex].showNumbers}}" class="option-tag">数字</text>
+              <text wx:if="{{questionnaire.questions[currentQuestionIndex].showHands}}" class="option-tag">指针</text>
+            </view>
+          </view>
+
+          <!-- 显示示例图片 -->
+          <block wx:if="{{questionnaire.questions[currentQuestionIndex].exampleImage}}">
+            <image
+              src="{{questionnaire.questions[currentQuestionIndex].exampleImage}}"
+              mode="aspectFit"
+              class="draw-example-image"
+            />
+          </block>
+          <view wx:else class="no-image"></view>
+
+          <!-- 可交互的画板区域 -->
+          <view class="draw-area">
+            <canvas
+              type="2d"
+              id="drawCanvas"
+              class="draw-canvas"
+              bindtouchstart="touchStart"
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd"
+              bindtap="handleTap"
+            ></canvas>
+          </view>
+
+          <!-- 工具栏 -->
+          <view class="draw-toolbar">
+            <view class="tool-group">
+              <text>颜色:</text>
+              <view class="color-btn {{currentColor === '#000000' ? 'active' : ''}}" style="background-color: #000000;" data-color="#000000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#FF0000' ? 'active' : ''}}" style="background-color: #FF0000;" data-color="#FF0000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#00FF00' ? 'active' : ''}}" style="background-color: #00FF00;" data-color="#00FF00" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#0000FF' ? 'active' : ''}}" style="background-color: #0000FF;" data-color="#0000FF" bindtap="selectColor"></view>
+            </view>
+
+            <view class="tool-group">
+              <text>线宽:</text>
+              <view class="line-width-btn {{currentLineWidth === 2 ? 'active' : ''}}" style="height: 4rpx;" data-width="2" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 5 ? 'active' : ''}}" style="height: 10rpx;" data-width="5" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 10 ? 'active' : ''}}" style="height: 20rpx;" data-width="10" bindtap="selectLineWidth"></view>
+            </view>
+
+            <view class="tool-group">
+              <view class="action-btn undo-btn" bindtap="undo">撤销</view>
+              <view class="action-btn clear-btn" bindtap="clearCanvas">清空</view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 画连线题：显示提示句和可交互画板 -->
+        <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'connect'}}">
+          <view class="draw-prompt-container">
+            <text class="prompt-title">提示句：</text>
+            <text class="prompt-content">{{questionnaire.questions[currentQuestionIndex].prompt || '请依照例图所示对本题进行1➡甲➡2➡乙......的顺序连线'}}</text>
+          </view>
+
+          <!-- 显示示例图片 -->
+          <block wx:if="{{questionnaire.questions[currentQuestionIndex].exampleImage}}">
+            <image
+              src="{{questionnaire.questions[currentQuestionIndex].exampleImage}}"
+              mode="aspectFit"
+              class="draw-example-image"
+            />
+          </block>
+          <view wx:else class="no-image"></view>
+
+          <!-- 可交互的画板区域 -->
+          <view class="draw-area">
+            <canvas
+              type="2d"
+              id="drawCanvas"
+              class="draw-canvas"
+              bindtouchstart="touchStart"
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd"
+            ></canvas>
+          </view>
+
+          <!-- 工具栏 -->
+          <view class="draw-toolbar">
+            <view class="tool-group">
+              <text>颜色:</text>
+              <view class="color-btn {{currentColor === '#000000' ? 'active' : ''}}" style="background-color: #000000;" data-color="#000000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#FF0000' ? 'active' : ''}}" style="background-color: #FF0000;" data-color="#FF0000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#00FF00' ? 'active' : ''}}" style="background-color: #00FF00;" data-color="#00FF00" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#0000FF' ? 'active' : ''}}" style="background-color: #0000FF;" data-color="#0000FF" bindtap="selectColor"></view>
+            </view>
+
+            <view class="tool-group">
+              <text>线宽:</text>
+              <view class="line-width-btn {{currentLineWidth === 2 ? 'active' : ''}}" style="height: 4rpx;" data-width="2" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 5 ? 'active' : ''}}" style="height: 10rpx;" data-width="5" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 10 ? 'active' : ''}}" style="height: 20rpx;" data-width="10" bindtap="selectLineWidth"></view>
+            </view>
+
+            <view class="tool-group">
+              <view class="action-btn undo-btn" bindtap="undo">撤销</view>
+              <view class="action-btn clear-btn" bindtap="clearCanvas">清空</view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 画图案题：添加可交互的画板 -->
+        <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'pattern'}}">
+          <!-- 显示提示句 -->
+          <view class="draw-prompt-container">
+            <text class="prompt-title">提示句：</text>
+            <text class="prompt-content">{{questionnaire.questions[currentQuestionIndex].prompt || '请根据题目要求完成画图'}}</text>
+          </view>
+
+          <!-- 显示示例图片 -->
+          <block wx:if="{{questionnaire.questions[currentQuestionIndex].exampleImage}}">
+            <image
+              src="{{questionnaire.questions[currentQuestionIndex].exampleImage}}"
+              mode="aspectFit"
+              class="draw-example-image"
+            >
+            </image>
+          </block>
+
+          <!-- 可交互的画板区域 -->
+          <view class="draw-area">
+            <canvas
+              type="2d"
+              id="drawCanvas"
+              class="draw-canvas"
+              bindtouchstart="touchStart"
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd"
+            ></canvas>
+          </view>
+
+          <!-- 工具栏 -->
+          <view class="draw-toolbar">
+            <view class="tool-group">
+              <text>颜色:</text>
+              <view class="color-btn {{currentColor === '#000000' ? 'active' : ''}}" style="background-color: #000000;" data-color="#000000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#FF0000' ? 'active' : ''}}" style="background-color: #FF0000;" data-color="#FF0000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#00FF00' ? 'active' : ''}}" style="background-color: #00FF00;" data-color="#00FF00" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#0000FF' ? 'active' : ''}}" style="background-color: #0000FF;" data-color="#0000FF" bindtap="selectColor"></view>
+            </view>
+
+            <view class="tool-group">
+              <text>线宽:</text>
+              <view class="line-width-btn {{currentLineWidth === 2 ? 'active' : ''}}" style="height: 4rpx;" data-width="2" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 5 ? 'active' : ''}}" style="height: 10rpx;" data-width="5" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 10 ? 'active' : ''}}" style="height: 20rpx;" data-width="10" bindtap="selectLineWidth"></view>
+            </view>
+
+            <view class="tool-group">
+              <view class="action-btn undo-btn" bindtap="undo">撤销</view>
+              <view class="action-btn clear-btn" bindtap="clearCanvas">清空</view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 画立体图题：显示提示句、示例图片和可交互画板 -->
+        <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === '3d'}}">
+          <!-- 显示提示句 -->
+          <view class="draw-prompt-container">
+            <text class="prompt-title">提示句：</text>
+            <text class="prompt-content">{{questionnaire.questions[currentQuestionIndex].prompt || '请根据题目要求完成画图'}}</text>
+          </view>
+
+          <!-- 显示示例图片 -->
+          <block wx:if="{{questionnaire.questions[currentQuestionIndex].exampleImage}}">
+            <image
+              src="{{questionnaire.questions[currentQuestionIndex].exampleImage}}"
+              mode="aspectFit"
+              class="draw-example-image"
+            />
+          </block>
+          <view wx:else class="no-image"></view>
+
+          <!-- 可交互的画板区域 -->
+          <view class="draw-area">
+            <canvas
+              type="2d"
+              id="drawCanvas"
+              class="draw-canvas"
+              bindtouchstart="touchStart"
+              bindtouchmove="touchMove"
+              bindtouchend="touchEnd"
+            ></canvas>
+          </view>
+
+          <!-- 工具栏 -->
+          <view class="draw-toolbar">
+            <view class="tool-group">
+              <text>颜色:</text>
+              <view class="color-btn {{currentColor === '#000000' ? 'active' : ''}}" style="background-color: #000000;" data-color="#000000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#FF0000' ? 'active' : ''}}" style="background-color: #FF0000;" data-color="#FF0000" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#00FF00' ? 'active' : ''}}" style="background-color: #00FF00;" data-color="#00FF00" bindtap="selectColor"></view>
+              <view class="color-btn {{currentColor === '#0000FF' ? 'active' : ''}}" style="background-color: #0000FF;" data-color="#0000FF" bindtap="selectColor"></view>
+            </view>
+
+            <view class="tool-group">
+              <text>线宽:</text>
+              <view class="line-width-btn {{currentLineWidth === 2 ? 'active' : ''}}" style="height: 4rpx;" data-width="2" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 5 ? 'active' : ''}}" style="height: 10rpx;" data-width="5" bindtap="selectLineWidth"></view>
+              <view class="line-width-btn {{currentLineWidth === 10 ? 'active' : ''}}" style="height: 20rpx;" data-width="10" bindtap="selectLineWidth"></view>
+            </view>
+
+            <view class="tool-group">
+              <view class="action-btn undo-btn" bindtap="undo">撤销</view>
+              <view class="action-btn clear-btn" bindtap="clearCanvas">清空</view>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="buttons">
+    <view class="row-buttons same-size-buttons">
+      <button class="btn-prev" bindtap="prevQuestion" disabled="{{currentQuestionIndex === 0}}">上一题</button>
+      <button class="btn-next" bindtap="nextQuestion" disabled="{{currentQuestionIndex === questionnaire.questions.length - 1}}">下一题</button>
+      <button class="btn-select" bindtap="showQuestionSelector">选题</button>
+    </view>
+    <view class="row-buttons finish-select same-size-buttons">
+      <button class="btn-save" bindtap="saveAnswer">保存答案</button>
+      <button class="btn-submit" bindtap="submitQuestionnaire">提交问卷</button>
+    </view>
+  </view>
+
+  <!-- 选题弹窗 -->
+  <view class="question-selector-mask" wx:if="{{showQuestionSelector}}" bindtap="hideQuestionSelector"></view>
+  <view class="question-selector" wx:if="{{showQuestionSelector}}">
+    <view class="selector-title">选择题目</view>
+    <view class="question-list">
+      <view wx:for="{{questionnaire.questions}}" wx:key="index"
+        class="question-item {{index === currentQuestionIndex ? 'current' : ''}}"
+        bindtap="selectQuestion" data-index="{{index}}">
+        Q{{index + 1}}
+      </view>
+    </view>
+  </view>
+</block>
+</view>

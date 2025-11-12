@@ -1,0 +1,121 @@
+/* pages/register/register.wxss */
+
+.register-container {
+  padding: 40rpx;
+}
+
+.header {
+  margin-bottom: 60rpx;
+  text-align: center;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.form-group {
+  margin-bottom: 40rpx;
+  position: relative;
+}
+
+input {
+  height: 90rpx;
+  padding: 0 30rpx;
+  border: 1rpx solid #e5e5e5;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  background: #f9f9f9;
+}
+
+.agreement {
+  display: flex;
+  align-items: center;
+  margin: 30rpx 0 50rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.agreement checkbox {
+  transform: scale(0.8);
+}
+
+.link {
+  color: #07c160;
+  margin-left: 10rpx;
+}
+
+.submit-btn {
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 12rpx;
+  font-size: 36rpx;
+}
+
+.other-login {
+  margin-top: 80rpx;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50rpx;
+}
+
+.divider .line {
+  flex: 1;
+  height: 1rpx;
+  background: #e5e5e5;
+}
+
+.divider .text {
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.login-methods {
+  display: flex;
+  justify-content: center;
+}
+
+.method-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0 40rpx;
+  margin: 0;
+}
+
+.method-btn::after {
+  border: none;
+}
+
+.method-btn .icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 15rpx;
+}
+
+.method-btn text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 错误提示样式 */
+.error-tip {
+  position: absolute;
+  bottom: -40rpx;
+  left: 30rpx;
+  font-size: 24rpx;
+  color: #e74c3c;
+}

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar"
+  },
+  "navigationBarTitleText": "模块问题管理",
+  "navigationBarBackgroundColor": "#2c7be5",
+  "navigationBarTextStyle": "white"
+}

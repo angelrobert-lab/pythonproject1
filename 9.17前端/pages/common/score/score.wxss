@@ -1,0 +1,380 @@
+/* pages/common/score/score.wxss */
+.container {
+  padding: 30rpx;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f0f5ff, #e6f0ff);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #303133;
+}
+
+.questionnaire-info {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.questionnaire-name {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 15rpx;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
+
+.questionnaire-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #606266;
+  margin-bottom: 15rpx;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
+
+.questionnaire-meta {
+  font-size: 28rpx;
+  color: #606266;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
+
+.score-list {
+  height: 460rpx;
+  margin-bottom: 30rpx;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.score-list::-webkit-scrollbar {
+  display: none;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.empty-image {
+  width: 200rpx;
+  height: 200rpx;
+  opacity: 0.5;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #909399;
+}
+
+.score-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-info {
+  flex: 1;
+}
+
+.question-number {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1890ff;
+  margin-bottom: 10rpx;
+}
+
+.question-title {
+  display: block;
+  font-size: 32rpx;
+  color: #303133;
+  line-height: 1.4;
+}
+
+.score-info {
+  margin-left: 20rpx;
+}
+
+.score-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #52c41a;
+}
+
+.total-score {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #303133;
+}
+
+.total-value {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+/* 模块得分样式 */
+.module-scores {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.module-scores-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 20rpx;
+}
+
+.module-score-item {
+  padding: 10rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.module-score-item:last-child {
+  border-bottom: none;
+}
+
+/* 模块头部 - 可点击区域 */
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.module-header:active {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.module-name {
+  font-size: 28rpx;
+  color: #303133;
+  flex: 1;
+  margin-right: 10rpx;
+}
+
+.module-score {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #52c41a;
+  margin-right: 10rpx;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+/* 展开/收起图标 */
+.expand-icon {
+  font-size: 24rpx;
+  color: #909399;
+  transition: transform 0.2s;
+  min-width: 30rpx;
+  text-align: center;
+}
+
+/* 模块内问题列表 */
+.module-questions {
+  background-color: #fafafa;
+  border-radius: 10rpx;
+  margin: 10rpx 0 20rpx 30rpx;
+  padding: 10rpx 0;
+  animation: expandFadeIn 0.3s ease-out;
+}
+
+/* 模块内单个问题 */
+.module-question-item {
+  background: #fff;
+  border-radius: 15rpx;
+  padding: 20rpx;
+  margin: 10rpx 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.module-question-item .question-number {
+  font-size: 26rpx;
+  margin-bottom: 8rpx;
+}
+
+.module-question-item .question-title {
+  font-size: 28rpx;
+  line-height: 1.4;
+}
+
+.module-question-item .score-value {
+  font-size: 28rpx;
+}
+
+/* 展开动画 */
+@keyframes expandFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 记录选择器样式 */
+.record-selector {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.selector-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 20rpx;
+}
+
+.record-list {
+  white-space: nowrap;
+  padding-bottom: 10rpx;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  scrollbar-width: none;
+  font-size: 0;
+}
+
+.record-list::-webkit-scrollbar {
+  display: none;
+}
+
+.record-item {
+  display: inline-block;
+  background: #f5f7fa;
+  border-radius: 15rpx;
+  padding: 20rpx 10rpx;
+  margin-right: 10rpx;
+  width: calc((100% - 20rpx) / 3);
+  max-width: calc((100% - 20rpx) / 3);
+  text-align: center;
+  border: 2rpx solid #e4e7ed;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  vertical-align: top;
+  position: relative;
+}
+
+.record-item:nth-child(3n) {
+  margin-right: 0;
+}
+
+.record-item.active {
+  background: #1890ff;
+  border-color: #1890ff;
+}
+
+.record-item.active .record-range,
+.record-item.active .record-score {
+  color: #fff;
+}
+
+.record-range {
+  display: block;
+  font-size: 22rpx;
+  color: #606266;
+  margin-bottom: 5rpx;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+}
+
+.record-score {
+  display: block;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #303133;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 5rpx;
+  right: 5rpx;
+  width: 30rpx;
+  height: 30rpx;
+  background: #ff4d4f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.delete-text {
+  color: #fff;
+  font-size: 20rpx;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.save-time {
+  font-size: 24rpx;
+  color: #909399;
+  margin-left: 20rpx;
+}

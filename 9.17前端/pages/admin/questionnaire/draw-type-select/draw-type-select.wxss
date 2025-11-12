@@ -1,0 +1,48 @@
+/* pages/admin/questionnaire/draw-type-select/draw-type-select.wxss */
+.container {
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 30rpx 0;
+  color: #333;
+}
+
+.type-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.type-item {
+  width: 90%;
+  margin: 0 5% 30rpx 5%;
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.type-image {
+  width: 600rpx;
+  height: 600rpx;
+  margin-bottom: 20rpx;
+}
+
+.type-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.back-btn {
+  margin-top: 40rpx;
+  width: 80%;
+  background-color: #f8f8f8;
+  color: #666;
+}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Black">
-    <option name="sdkName" value="智能诊断1" />
+    <option name="sdkName" value="问卷系统" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="智能诊断1" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="智能诊断" project-jdk-type="Python SDK" />
 </project>

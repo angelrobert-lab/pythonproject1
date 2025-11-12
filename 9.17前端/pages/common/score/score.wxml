@@ -1,0 +1,80 @@
+<!-- pages/common/score/score.wxml -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="header">
+    <text class="title">得分详情</text>
+  </view>
+
+  <!-- 问卷信息 -->
+  <view class="questionnaire-info">
+    <text class="questionnaire-name">{{questionnaireName}}</text>
+    <text wx:if="{{questionnaireDescription}}" class="questionnaire-desc">{{questionnaireDescription}}</text>
+    <text wx:if="{{selectedRecord}}" class="questionnaire-meta">
+      题号范围：第{{startQuestion}}题 至 第{{endQuestion}}题
+    </text>
+  </view>
+
+  <!-- 记录选择器 -->
+  <view wx:if="{{scoreRecords.length > 0}}" class="record-selector">
+    <text class="selector-label">选择记录：</text>
+    <scroll-view class="record-list" scroll-x>
+      <view wx:for="{{scoreRecords}}" wx:key="key" 
+            class="record-item {{selectedRecord.key === item.key ? 'active' : ''}}"
+            bindtap="selectRecord" data-index="{{index}}">
+        <view class="delete-icon" catchtap="deleteRecord" data-key="{{item.key}}" data-index="{{index}}">
+           <text class="delete-text">×</text>
+         </view>
+        <text class="record-range">{{item.startQuestion}}-{{item.endQuestion}}题</text>
+        <text class="record-score">{{item.totalScore}}分</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 得分列表 -->
+  <scroll-view class="score-list" scroll-y>
+    <view wx:if="{{scoreData.length === 0}}" class="empty-state">
+      <image src="/images/empty.png" class="empty-image"></image>
+      <text class="empty-text">暂无得分数据</text>
+    </view>
+
+    <view wx:for="{{scoreData}}" wx:key="index" class="score-item">
+      <view class="question-info">
+        <text class="question-number">第{{item.questionNumber + 1}}题</text>
+        <text class="question-title">{{item.questionTitle}}</text>
+      </view>
+      <view class="score-info">
+        <text class="score-value">{{item.score}}分</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 模块得分统计 -->
+  <view wx:if="{{moduleScores.length > 0}}" class="module-scores">
+    <text class="module-scores-title">模块得分</text>
+    <view wx:for="{{moduleScores}}" wx:key="moduleIndex" class="module-score-item">
+      <view class="module-header" bindtap="toggleModule" data-module-index="{{index}}">
+        <text class="module-name">{{item.moduleName}} ({{item.questionCount}}题)</text>
+        <text class="module-score">{{item.score}}分</text>
+        <text class="expand-icon">{{expandedModules['module_' + index] ? '▼' : '▶'}}</text>
+      </view>
+      <!-- 展开的问题列表 -->
+      <view wx:if="{{expandedModules['module_' + index]}}" class="module-questions">
+        <view wx:for="{{moduleQuestionsMap[index]}}" wx:for-item="question" wx:key="question.questionNumber" class="module-question-item">
+          <view class="question-info">
+            <text class="question-number">第{{question.questionNumber + 1}}题</text>
+            <text class="question-title">{{question.questionTitle}}</text>
+          </view>
+          <view class="score-info">
+            <text class="score-value">{{question.score}}分</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 总分统计 -->
+  <view class="total-score">
+    <text class="total-label">总分：</text>
+    <text class="total-value">{{totalScore}}分</text>
+  </view>
+</view>

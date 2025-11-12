@@ -1,0 +1,62 @@
+<view class="login-container">
+  <!-- 顶部标题和logo -->
+  <view class="header">
+    <image class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMTJoLTRsLTMgOUw5IDNsLTMgOWgtNCIvPjwvc3ZnPg==" />
+    <text class="title">智慧诊断系统</text>
+    <text class="subtitle">老年人肌骨系统退行性病变诊断及运动防治平台</text>
+  </view>
+  
+  <!-- 身份选择卡片 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">请选择您的身份</text>
+    </view>
+    
+    <view class="role-container">
+      <view 
+        class="role-item {{selectedRole === 'user' ? 'active' : ''}}" 
+        bindtap="selectRole" 
+        data-role="user"
+      >
+        <image class="role-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMCAwLTQgNHYyIj48L3BhdGg+PGNpcmNsZSBjeD0iMTIiIGN5PSI3IiByPSI0Ij48L2NpcmNsZT48L3N2Zz4=" />
+        <text class="role-name">普通用户</text>
+      </view>
+      
+      <view 
+        class="role-item {{selectedRole === 'admin' ? 'active' : ''}}" 
+        bindtap="selectRole" 
+        data-role="admin"
+      >
+        <image class="role-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xNiAyMWw1LTUtNS01Ij48L3BhdGg+PHBhdGggZD0iTTQgMTZ2NWg1Ij48L3BhdGg+PHBhdGggZD0iTTkgN0g0djUiPjwvcGF0aD48cGF0aCBkPSJNMTUgM0g5djUiPjwvcGF0aD48cGF0aCBkPSJNMTUgM2w1IDUtNSA1Ij48L3BhdGg+PC9zdmc+" />
+        <text class="role-name">系统管理员</text>
+      </view>
+      
+      <view 
+        class="role-item {{selectedRole === 'researcher' ? 'active' : ''}}" 
+        bindtap="selectRole" 
+        data-role="researcher"
+      >
+        <image class="role-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMS4yOSAxMS43MWwtLjU0LS41NEExMCAxMCAwIDAgMSAzLjQyIDQuMjJMMiAyLjgzYTIgMiAwIDAgMC0yLjgzIDBsLjc5Ljc5YTIgMiAwIDAgMCAxLjQyLjU4Yy41NCAwIDEuMDgtLjEzIDEuNTQtLjRsLjQyLS40MmE0LjQgNC40IDAgMCAxIC43LS40Mmw0LjQzIDQuNDNhNC40IDQuNCAwIDAgMS0uNDIuN2wtLjQyLjQyYTIuODQgMi44NCAwIDAgMS0xLjU0LjQgMi44NCAyLjg0IDAgMCAxLTEuNTQtLjRMMi44MyAxNGExLjk5IDEuOTkgMCAwIDAgMCAyLjgzbDEuNDIgMS40MmExMCAxMCAwIDAgMCA3LjA3LTIuODNsLjU0LjU0YTEuOTkgMS45OSAwIDAgMCAyLjgzIDBsMS40Mi0xLjQyYTEuOTkgMS45OSAwIDAgMCAwLTIuODN6Ii8+PHBhdGggZD0iTTE1LjI5IDguNzFhNC40IDQuNCAwIDAgMS0uNy40Mmw0LjQzIDQuNDNhNC40IDQuNCAwIDAgMS0uNDIuN2wtLjQyLjQyYTIuODQgMi44NCAwIDAgMS0xLjU0LjQgMi44NCAyLjg0IDAgMCAxLTEuNTQtLjRMMTQuODMgMTZhMS45OSAxLjk5IDAgMCAwIDAgMi44M2wxLjQyIDEuNDJhMS45OSAxLjk5IDAgMCAwIDIuODMgMGwxLjQyLTEuNDJhMS45OSAxLjk5IDAgMCAwIDAtMi44M3oiLz48L3N2Zz4=" />
+        <text class="role-name">医学研究员</text>
+      </view>
+      
+      <view 
+        class="role-item {{selectedRole === 'surveyor' ? 'active' : ''}}" 
+        bindtap="selectRole" 
+        data-role="surveyor"
+      >
+        <image class="role-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjQiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjIiIHJ5PSIyIj48L3JlY3Q+PGxpbmUgeDE9IjgiIHkxPSIxMCIgeDI9IjE2IiB5Mj0iMTAiPjwvbGluZT48bGluZSB4MT0iOCIgeTE9IjE0IiB4Mj0iMTQiIHkyPSIxNCI+PC9saW5lPjxsaW5lIHgxPSI4IiB5MT0iNiIgeDI9IjgiIHkyPSI2Ij48L2xpbmU+PC9zdmc+" />
+        <text class="role-name">问卷录入员</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 下一步按钮 -->
+  <button 
+    class="next-btn {{!selectedRole ? 'disabled' : ''}}" 
+    bindtap="goToLoginDetail"
+    disabled="{{!selectedRole}}"
+  >
+    下一步
+  </button>
+</view>

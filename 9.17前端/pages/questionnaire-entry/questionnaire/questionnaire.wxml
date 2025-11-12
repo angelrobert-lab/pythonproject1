@@ -1,0 +1,45 @@
+<!-- pages/questionnaire-entry/questionnaire/questionnaire.wxml -->
+<view class="container">
+  <!-- 顶部搜索和创建按钮 -->
+  <view class="header">
+    <view class="search-box">
+      <image src="/images/search.png" class="search-icon" bindtap="triggerSearch"></image>
+      <input 
+        placeholder="搜索问卷名称" 
+        placeholder-class="placeholder"
+        value="{{searchValue}}"
+        bindinput="onSearch"
+      />
+    </view>
+    <button class="review-btn" bindtap="reviewQuestionnaire">批阅问卷</button>
+  </view>
+
+  <!-- 问卷列表 -->
+  <scroll-view class="list-container" scroll-y>
+    <!-- 空状态 -->
+    <view wx:if="{{showEmpty}}" class="empty-state">
+      <image src="/images/empty.png" class="empty-image"></image>
+      <text class="empty-text">暂无问卷数据</text>
+    </view>
+
+    <!-- 问卷列表 -->
+    <view wx:for="{{questionnaires}}" wx:key="id" class="list-item">
+      <view class="item-header">
+        <text class="item-name">{{item.name}}</text>
+        <button class="item-status-btn {{item.status === '已发布' ? 'published' : 'draft'}}" bindtap="toggleQuestionnaireStatus" data-id="{{item.id}}">
+          {{item.status}}
+        </button>
+      </view>
+      
+      <view class="item-meta">
+        <text>创建时间: {{item.createdAt}}</text>
+      </view>
+      
+      <view class="item-actions">
+        <button class="action-btn view" bindtap="viewQuestionnaire" data-id="{{item.id}}">查看</button>
+        <button class="action-btn edit" bindtap="editQuestionnaire" data-id="{{item.id}}">编辑</button>
+        <button class="action-btn export" bindtap="exportQuestionnaire" data-id="{{item.id}}">导出</button>
+      </view>
+    </view>
+  </scroll-view>
+</view>

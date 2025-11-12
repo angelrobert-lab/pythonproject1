@@ -3,25 +3,29 @@
 from django.db.models import Q
 from rest_framework import serializers
 from .models import SmartUser, Feedback, Questionnaire, Question, Answer
+import json
 
 # ==============================================================================
 # 1. 统一的用户模型序列化器
 # ==============================================================================
 class SmartUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, min_length=6)
+
     class Meta:
         model = SmartUser
-        # 列出所有需要通过API暴露的用户字段
         fields = [
-            'id', 'username', 'nickname', 'email', 'user_type', 'gender', 'age', 
+            'id', 'username', 'password', 'nickname', 'email', 'user_type', 'gender', 'age',
             'position', 'specialty', 'avatar', 'first_name', 'last_name'
         ]
         extra_kwargs = {
-            'password': {'write_only': True} # 密码只用于写入，不通过API读出
+            'password': {'write_only': True}  # 密码只用于写入，不通过API读出
         }
-    
+
     def create(self, validated_data):
-        # 重写 create 方法以正确处理密码加密
-        user = SmartUser.objects.create_user(**validated_data)
+        password = validated_data.pop('password')
+        user = SmartUser(**validated_data)
+        user.set_password(password)
+        user.save()
         return user
 
 # ==============================================================================
@@ -55,14 +59,25 @@ class FeedbackSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'created_at']
 
 class QuestionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
     options = serializers.JSONField(required=False, allow_null=True)
     matrix_data = serializers.JSONField(required=False, allow_null=True)
     blanks = serializers.JSONField(required=False, allow_null=True)
 
+    def to_internal_value(self, data):
+        for key in ['options', 'matrix_data', 'blanks']:
+            if key in data and isinstance(data[key], str):
+                try:
+                    data[key] = json.loads(data[key])
+                except Exception:
+                    pass
+        return super().to_internal_value(data)
+
     class Meta:
         model = Question
         fields = '__all__'
-        read_only_fields = ['id', 'questionnaire', 'created_at']
+        read_only_fields = ['questionnaire', 'created_at']
 
 class QuestionnaireSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, required=False)
@@ -78,14 +93,39 @@ class QuestionnaireSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['created_by'] = self.context['request'].user
-        
         questions_data = validated_data.pop('questions', [])
         questionnaire = Questionnaire.objects.create(**validated_data)
-
         for question_data in questions_data:
             Question.objects.create(questionnaire=questionnaire, **question_data)
-
         return questionnaire
+
+    def update(self, instance, validated_data):
+        questions_data = validated_data.pop('questions', None)
+        self.partial = True
+
+        # 先更新问卷自身字段
+        for attr in ['title', 'description', 'status']:
+            if attr in validated_data:
+                setattr(instance, attr, validated_data[attr])
+        instance.save()
+
+        # 若请求中有 questions，则进行子表更新
+        if questions_data is not None:
+            existing_questions = {q.id: q for q in instance.questions.all()}
+            for q_data in questions_data:
+                q_id = q_data.get('id')
+                if q_id and q_id in existing_questions:
+                    # 更新已有题目
+                    question = existing_questions[q_id]
+                    for key, value in q_data.items():
+                        if key != 'id':
+                            setattr(question, key, value)
+                    question.save()
+                else:
+                    Question.objects.create(questionnaire=instance, **q_data)
+
+        return instance
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
