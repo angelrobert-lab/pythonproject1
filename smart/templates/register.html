@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 智能管理系统</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/redirect_guard.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .register-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .register-header h1 {
+            color: #333;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .register-header p {
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .register-form .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .register-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .register-form input:focus {
+            border-color: #6e8efb;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(110, 142, 251, 0.2);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #6e8efb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-register:hover {
+            background-color: #5a7df9;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .form-footer a {
+            color: #6e8efb;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>智能管理系统</h1>
+            <p>创建新账号</p>
+        </div>
+
+        <div class="error-message message" id="errorMessage">
+            注册失败，请稍后重试
+        </div>
+
+        <div class="success-message message" id="successMessage">
+            注册成功，正在跳转到登录页面...
+        </div>
+
+        <form class="register-form" id="registerForm">
+            <div class="form-group">
+                <label for="nickname">昵称</label>
+                <input type="text" id="nickname" name="nickname" placeholder="请输入昵称" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="email" id="email" name="email" placeholder="请输入邮箱" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码" required>
+            </div>
+
+            <div class="form-group">
+                <label for="user_type">用户类型</label>
+                <input type="text" id="user_type" name="user_type" placeholder="请输入用户类型" value="system_admin" required>
+            </div>
+
+            <button type="submit" class="btn-register">注册</button>
+        </form>
+
+        <div class="form-footer">
+            <p>已有账号？<a href="/smart/login/">立即登录</a></p>
+        </div>
+    </div>
+
+    <script>
+        // 使用DOMContentLoaded确保页面元素都已加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('注册页面加载完成');
+            
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('表单提交事件触发');
+
+                    const nickname = document.getElementById('nickname').value;
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const userType = document.getElementById('user_type').value;
+
+                    // 简单验证
+                    if (!nickname || !email || !password || !userType) {
+                        showMessage('请填写所有必填字段', 'error');
+                        return;
+                    }
+
+                    // 发送注册请求
+                    console.log('准备发送注册请求');
+                    fetch('/smart/register/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            nickname: nickname,
+                            email: email,
+                            password: password,
+                            user_type: userType
+                        })
+                    })
+                    .then(function(response) {
+                        console.log('收到注册响应，状态码:', response.status);
+                        if (!response.ok) {
+                            throw new Error('网络响应错误: ' + response.status);
+                        }
+                        return response.json().catch(function() {
+                            // 处理不是JSON格式的响应
+                            throw new Error('响应不是有效的JSON格式');
+                        });
+                    })
+                    .then(function(data) {
+                        console.log('解析响应数据:', data);
+                        if (data && data.status === 'success') {
+                            // 显示成功消息
+                            showMessage('注册成功，正在跳转到登录页面...', 'success');
+                            
+                            // 获取重定向URL，设置默认值
+                            const redirectUrl = data.redirect_url || '/smart/login/';
+                            console.log('准备重定向到:', redirectUrl);
+                            
+                            // 无论如何都执行重定向，确保用户被导航到登录页面
+                            setTimeout(function() {
+                                console.log('执行重定向');
+                                window.location.href = redirectUrl;
+                            }, 1000);
+                        } else {
+                            showMessage(data && data.message || '注册失败', 'error');
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('注册过程发生错误:', error);
+                        showMessage('网络错误，请稍后重试', 'error');
+                        
+                        // 即使出错，也提供一个手动跳转到登录页面的选项
+                        setTimeout(function() {
+                            if (confirm('注册过程中发生错误，是否跳转到登录页面？')) {
+                                window.location.href = '/smart/login/';
+                            }
+                        }, 3000);
+                    });
+                });
+            } else {
+                console.error('未找到注册表单元素');
+            }
+        });
+
+        function showMessage(message, type) {
+            const errorEl = document.getElementById('errorMessage');
+            const successEl = document.getElementById('successMessage');
+
+            // 隐藏所有消息
+            if (errorEl) errorEl.classList.remove('show');
+            if (successEl) successEl.classList.remove('show');
+
+            // 显示对应类型的消息
+            if (type === 'error' && errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.add('show');
+            } else if (type === 'success' && successEl) {
+                successEl.textContent = message;
+                successEl.classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>

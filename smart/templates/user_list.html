@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+</head>
+<body>
+    <h1>用户列表</h1>
+    <ul>
+        {% for user in users %}
+            <li>
+                用户名: {{ user.username }},
+                角色: {{ user.get_user_type_display }},
+                昵称: {{ user.nickname }},
+                邮箱: {{ user.email }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

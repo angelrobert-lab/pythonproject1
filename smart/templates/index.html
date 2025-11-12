@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户数据展示</title>
+</head>
+<body>
+    <h1>用户数据展示</h1>
+    <h2>Smart Users</h2>
+    <ul id="smart-users"></ul>
+
+
+    <script>
+        // 发送请求获取数据
+        fetch('/get_users/')
+           .then(response => response.json())
+           .then(data => {
+                // 显示 smart_user 表的数据
+                const smartUsersList = document.getElementById('smart-users');
+                data.smart_users.forEach(user => {
+                    const li = document.createElement('li');
+                    li.textContent = JSON.stringify(user);
+                    smartUsersList.appendChild(li);
+                });
+
+
+            })
+           .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
