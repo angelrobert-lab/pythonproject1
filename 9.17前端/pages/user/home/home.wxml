@@ -1,0 +1,59 @@
+<view class="user-container">
+  <!-- 顶部时间显示 -->
+  <view class="time-display">
+    <text class="current-time">{{currentTime}}</text>
+    <text class="current-date">{{currentDate}}</text>
+  </view>
+  
+
+  
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-header">
+      <image class="user-avatar" src="{{userInfo.avatar || '/images/avatar-admin.png'}}" mode="aspectFill" />
+      <view class="user-info">
+        <text class="user-name">{{userInfo.name}}</text>
+        <text class="user-role">{{userInfo.role}}</text>
+      </view>
+    </view>
+    <view class="user-footer">
+      <text class="login-time">本次登录时间: {{userInfo.lastLogin}}</text>
+    </view>
+  </view>
+  
+  <!-- 功能卡片区域 -->
+  <view class="function-cards">
+    <!-- 查看问卷卡片 -->
+    <view class="function-card card-questionnaire" hover-class="card-hover" bindtap="goToQuestionnaire">
+      <view class="card-icon">
+        <image src="/images/icon-questionnaire.png" />
+      </view>
+      <text class="card-title">查看问卷</text>
+      <text class="card-desc">浏览和填写健康问卷</text>
+      <view class="card-footer">
+        <text>进入</text>
+        <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSA5bDcgNyA3LTciPjwvcGF0aD48L3N2Zz4=" />
+      </view>
+    </view>
+    
+
+    
+    <!-- 个人中心卡片 -->
+    <view class="function-card card-profile" hover-class="card-hover" bindtap="goToProfile">
+      <view class="card-icon">
+        <image src="/images/icon-profile.png" />
+      </view>
+      <text class="card-title">个人中心</text>
+      <text class="card-desc">管理个人信息</text>
+      <view class="card-footer">
+        <text>进入</text>
+        <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSA5bDcgNyA3LTciPjwvcGF0aD48L3N2Zz4=" />
+      </view>
+    </view>
+  </view>
+  
+  <!-- 退出登录按钮 -->
+  <view class="logout-container">
+    <button class="logout-btn" hover-class="btn-hover" bindtap="logout">退出登录</button>
+  </view>
+</view>

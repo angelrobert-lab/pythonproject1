@@ -1,0 +1,66 @@
+<view class="login-container">
+  <!-- 顶部标题和logo -->
+  <view class="header">
+    <image class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjIgMTJoLTRsLTMgOUw5IDNsLTMgOWgtNCIvPjwvc3ZnPg==" />
+    <text class="title">智慧诊断系统</text>
+    <text class="subtitle">老年人肌骨系统退行性病变诊断及运动防治平台</text>
+  </view>
+  
+  <!-- 身份显示 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">当前身份：{{roleName}}</text>
+    </view>
+  </view>
+  
+  <!-- 登录表单 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">登录信息</text>
+    </view>
+    
+    <view class="form-container">
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input 
+          class="form-input" 
+          placeholder="请输入昵称（2-16位汉字、英文、数字）" 
+          placeholder-class="input-placeholder"
+          bindinput="onNicknameInput"
+          type="text"
+          maxlength="16"
+        />
+        <!-- 昵称错误提示 -->
+        <view wx:if="{{nicknameError}}" class="error-tip">
+          {{nicknameError}}
+        </view>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">密码</text>
+        <input 
+          class="form-input" 
+          type="password" 
+          placeholder="请输入密码（8-16位字母+数字）" 
+          placeholder-class="input-placeholder"
+          value="{{password}}"
+          maxlength="16"
+          bindinput="onPasswordInput"
+        />
+        <view wx:if="{{passwordError}}" class="error-tip">{{passwordError}}</view>
+      </view>
+      
+      <button 
+        class="login-btn {{!canSubmit ? 'disabled' : ''}}" 
+        bindtap="handleLogin"
+        disabled="{{!canSubmit}}"
+      >
+        登录系统
+      </button>
+      <view class="footer-links">
+        <text class="link" bindtap="navigateToForgotPassword">忘记密码?</text>
+        <text class="link" bindtap="goToRegister">立即注册</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,245 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <image src="/images/empty.png" class="loading-icon"></image>
+    <text>加载问卷中...</text>
+  </view>
+
+  <!-- 问卷内容 -->
+  <block wx:else>
+    <!-- 顶部进度条 -->
+    <view class="progress-container">
+      <view class="progress-bar">
+        <view class="progress-active" style="{{'width:' + ((currentQuestionIndex + 1) / questionnaire.questions.length * 100) + '%;'}}"></view>
+      </view>
+      <text class="progress-text">{{currentQuestionIndex + 1}}/{{questionnaire.questions.length}}</text>
+    </view>
+
+    <!-- 问卷标题和描述 -->
+    <view class="questionnaire-header section-card">
+      <text class="title">{{questionnaire.name}}</text>
+      <text class="description">{{questionnaire.description}}</text>
+    </view>
+
+    <!-- 问题内容 -->
+    <view class="question-content">
+      <view class="question-card section-card">
+        <view class="question-header">
+          <text class="question-index">Q{{currentQuestionIndex + 1}}</text>
+          <text class="question-type">
+            <block wx:if="{{questionnaire.questions[currentQuestionIndex].type === 'single'}}">(单选题)</block>
+            <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'multiple'}}">(多选题)</block>
+            <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'text'}}">(问答题)</block>
+            <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'draw'}}">
+              <block wx:if="{{questionnaire.questions[currentQuestionIndex].subType === 'pattern'}}">(画图案)</block>
+              <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === '3d'}}">(画立体图)</block>
+              <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'clock'}}">(画钟表)</block>
+              <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'connect'}}">(连线题)</block>
+              <block wx:else>(画图题)</block>
+            </block>
+          </text>
+        </view>
+        
+        <button class="small-edit-btn" bindtap="editCurrentQuestion">更改</button>
+        <text class="question-title">{{questionnaire.questions[currentQuestionIndex].title}}</text>
+        <text wx:if="{{questionnaire.questions[currentQuestionIndex].moduleName}}" class="module-tag">所属模块：{{questionnaire.questions[currentQuestionIndex].moduleName}}</text>
+
+        <!-- 根据问题类型展示不同的内容 -->
+        <block wx:if="{{questionnaire.questions[currentQuestionIndex].type === 'single' || questionnaire.questions[currentQuestionIndex].type === 'multiple'}}">
+          <!-- 显示上传的图片 -->
+          <view wx:if="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" class="example-image-container">
+            <image 
+              src="{{questionnaire.questions[currentQuestionIndex].imageUrl}}"
+              mode="aspectFit"
+              class="example-image"
+            />
+          </view>
+          <view class="options">
+            <view wx:for="{{questionnaire.questions[currentQuestionIndex].options}}" wx:key="index" class="option-item">
+              <input class="option-letter-input" value="{{letters[index]}}" disabled />
+              <view class="option-text-container">
+                <text class="option-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 填空题：显示填空结构 -->
+        <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'blank'}}">
+          <view class="blanks-container">
+            <view wx:for="{{questionnaire.questions[currentQuestionIndex].blanks}}" wx:for-item="blank" wx:for-index="blankIndex" wx:key="blankIndex" class="blank-item">
+              <text class="blank-label">填空{{blankIndex + 1}}：</text>
+              <view class="blank-placeholder">请在此输入答案</view>
+            </view>
+          </view>
+        </block>
+<!-- 勾选题展示 -->
+<block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'matrix'}}">
+  <!-- 图片上传区域 -->
+  <view class="section-header">
+    <text class="section-title">题目图片</text>
+  </view>
+  <view class="upload-container">
+    <image wx:if="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" src="{{questionnaire.questions[currentQuestionIndex].imageUrl}}" mode="aspectFit" class="uploaded-image"></image>
+    <view wx:else class="no-image"></view>
+  </view>
+
+  <!-- 矩阵编辑区域 -->
+  <view class="section-header matrix-section">
+    <text class="section-title">勾选题表格</text>
+  </view>
+
+  <view class="matrix-edit-container">
+    <!-- 左上角固定单元格 -->
+    <view class="fixed-corner"></view>
+
+    <!-- 列标题区域 (可横向滚动) -->
+    <scroll-view class="matrix-header-scroll" scroll-x="{{true}}" scroll-left="{{scrollLeft}}" bindscroll="onHeaderScroll">
+      <view class="matrix-header">
+        <view wx:for="{{questionnaire.questions[currentQuestionIndex].matrix.colHeaders}}" wx:key="col-{{index}}" class="header-cell">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 行标题和内容区域 (可纵向滚动) -->
+    <scroll-view class="matrix-body-scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" bindscroll="onBodyScroll">
+      <view wx:for="{{questionnaire.questions[currentQuestionIndex].matrix.rowHeaders}}" wx:key="row-{{index}}" class="matrix-row">
+        <!-- 行标题 -->
+        <view class="row-header">
+          <text>{{item}}</text>
+        </view>
+
+        <!-- 单元格区域 (可横向滚动) -->
+        <scroll-view class="matrix-cells-scroll" scroll-x="{{true}}" scroll-left="{{scrollLeft}}" bindscroll="onCellsScroll">
+          <view class="matrix-row-cells">
+            <view wx:for="{{questionnaire.questions[currentQuestionIndex].matrix.colHeaders}}" wx:for-item="colItem" wx:for-index="colIndex" wx:key="colIndex" class="matrix-cell">
+              <view class="checkbox"></view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </scroll-view>
+  </view>
+</block>
+        <!-- 问答题：显示答题区域 -->
+        <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'text'}}">
+          <view class="text-input-container">
+            <view class="text-placeholder">请在此输入您的回答</view>
+          </view>
+        </block>
+
+        <block wx:elif="{{questionnaire.questions[currentQuestionIndex].type === 'draw'}}">
+          <!-- 画钟表题：显示提示句和画板内容 -->
+          <block wx:if="{{questionnaire.questions[currentQuestionIndex].subType === 'clock'}}">
+            <view class="clock-prompt-container">
+              <text class="prompt-title">提示句：</text>
+              <text class="prompt-content">请画出{{questionnaire.questions[currentQuestionIndex].hour || 'X'}}点{{questionnaire.questions[currentQuestionIndex].timeRelation || '过'}}{{questionnaire.questions[currentQuestionIndex].minute || 'X'}}分</text>
+              <view class="prompt-options">
+                <text wx:if="{{questionnaire.questions[currentQuestionIndex].showOutline}}" class="option-tag">轮廓</text>
+                <text wx:if="{{questionnaire.questions[currentQuestionIndex].showNumbers}}" class="option-tag">数字</text>
+                <text wx:if="{{questionnaire.questions[currentQuestionIndex].showHands}}" class="option-tag">指针</text>
+              </view>
+            </view>
+            
+            <!-- 显示画板区域 -->
+            <view class="drawing-preview-container">
+              <text class="preview-title">画板区域：</text>
+              <view class="drawing-placeholder">
+                <text>请在此区域进行绘制</text>
+              </view>
+            </view>
+          </block>
+
+          <!-- 画连线题：显示提示句和画板预览 -->
+          <block wx:elif="{{questionnaire.questions[currentQuestionIndex].subType === 'connect'}}">
+            <view class="connect-prompt-container">
+              <text class="prompt-title">提示句：</text>
+              <text class="prompt-content">{{questionnaire.questions[currentQuestionIndex].prompt || '请依照例图所示对本题进行1➡甲➡2➡乙……的顺序连线'}}</text>
+            </view>
+            
+            <!-- 显示上传的例图 -->
+            <view wx:if="{{questionnaire.questions[currentQuestionIndex].exampleImage}}" class="example-image-container">
+              <text class="preview-title">例图：</text>
+              <image 
+                src="{{questionnaire.questions[currentQuestionIndex].exampleImage}}" 
+                mode="aspectFit" 
+                class="example-image"
+              />
+            </view>
+            
+            <!-- 画板内容预览 -->
+            <view class="drawing-preview-container">
+              <text class="preview-title">画板预览：</text>
+              <image 
+                src="{{questionnaire.questions[currentQuestionIndex].drawingData}}" 
+                mode="aspectFit" 
+                class="drawing-preview" 
+                wx:if="{{questionnaire.questions[currentQuestionIndex].drawingData}}"
+              />
+              <text wx:else class="empty-drawing">暂无绘制内容</text>
+            </view>
+          </block>
+
+          <!-- 画图案和画立体图题：显示提示句、示例图片和画板区域 -->
+          <block wx:else>
+            <!-- 显示提示句 -->
+            <view class="draw-prompt-container">
+              <text class="prompt-title">提示句：</text>
+              <text class="prompt-content">{{questionnaire.questions[currentQuestionIndex].prompt || '请根据题目要求完成画图'}}</text>
+            </view>
+            
+            <view class="draw-area">
+              <!-- 显示示例图片 -->
+              <block wx:if="{{questionnaire.questions[currentQuestionIndex].exampleImage}}">
+                <image 
+                  src="{{questionnaire.questions[currentQuestionIndex].exampleImage}}" 
+                  mode="aspectFit"
+                  class="draw-example-image">
+                </image>
+                <text class="image-hint">示例图片</text>
+              </block>
+              <view wx:else class="no-image">
+                <image src="/images/draw-icon.png" class="draw-icon"></image>
+                <text>画图区域</text>
+              </view>
+            </view>
+            
+            <!-- 显示画板区域 -->
+            <view class="drawing-preview-container">
+              <text class="preview-title">画板区域：</text>
+              <view class="drawing-placeholder">
+                <text>请在此区域进行绘制</text>
+              </view>
+            </view>
+          </block>
+        </block>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="buttons">
+      <view class="row-buttons">
+        <button class="btn-prev" bindtap="prevQuestion" disabled="{{currentQuestionIndex === 0}}">上一题</button>
+        <button class="btn-next" bindtap="nextQuestion" disabled="{{currentQuestionIndex === questionnaire.questions.length - 1}}">下一题</button>
+      </view>
+      <view class="row-buttons finish-select">
+        <button class="btn-select" bindtap="showQuestionSelector">选题</button>
+        <button class="btn-finish" bindtap="finishPreview">结束预览</button>
+      </view>
+    </view>
+
+    <!-- 选题弹窗 -->
+    <view class="question-selector-mask" wx:if="{{showQuestionSelector}}" bindtap="hideQuestionSelector"></view>
+    <view class="question-selector" wx:if="{{showQuestionSelector}}">
+      <view class="selector-title">选择题目</view>
+      <view class="question-list">
+        <view wx:for="{{questionnaire.questions}}" wx:key="index" 
+              class="question-item {{index === currentQuestionIndex ? 'current' : ''}}" 
+              bindtap="selectQuestion" data-index="{{index}}">
+          Q{{index + 1}}
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

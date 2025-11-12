@@ -1,0 +1,75 @@
+<!-- pages/admin/questionnaire/module-questions/module-questions.wxml -->
+<view class="container">
+  <navigation-bar title="{{moduleName}}" showBack="true"></navigation-bar>
+  
+  <!-- 模块信息 -->
+  <view class="module-info">
+    <text class="module-name">{{moduleName}}</text>
+    <text class="question-count">共 {{moduleQuestions.length}} 题</text>
+  </view>
+  
+  <!-- 问题列表 -->
+  <view class="section-card">
+    <text class="section-title">问题列表</text>
+    
+    <view wx:if="{{moduleQuestions.length === 0}}" class="empty-hint">
+      <image src="/images/empty.png" class="empty-icon" />
+      <text>该模块暂无问题，请添加问题</text>
+    </view>
+    
+    <view wx:for="{{moduleQuestions}}" wx:key="index" class="question-item" id="question-item-{{index}}">
+      <view class="question-header">
+        <text class="question-type">{{item.type === 'single' ? '单选题' : 
+                                 item.type === 'multiple' ? '多选题' : 
+                                 item.type === 'text' ? '问答题' : 
+                                 item.type === 'blank' ? '填空题' : 
+                                 item.type === 'draw' ? '画图题(' + item.subTypeName + ')' : 
+                                 item.type === 'matrix' ? '勾选题' : '其他题型'}}</text>
+        <text class="module-tag" wx:if="{{item.moduleName}}">{{item.moduleName}}</text>
+        <text class="question-number">{{index + 1}}. {{item.title}}</text>
+        <view class="question-actions">
+          <button class="action-btn edit" bindtap="editQuestion" data-index="{{index}}">编辑</button>
+          <button class="action-btn delete" bindtap="deleteQuestion" data-index="{{index}}">删除</button>
+        </view>
+      </view>
+      
+      <!-- 单选题、多选题和勾选题图片 -->
+      <view wx:if="{{(item.type === 'single' || item.type === 'multiple' || item.type === 'matrix') && item.imageUrl}}" class="draw-example-container">
+        <image src="{{item.imageUrl}}" mode="aspectFit" class="draw-example-image" />
+        <text class="image-caption">示例图</text>
+      </view>
+      
+      <!-- 画图题示例图片 -->
+      <view wx:if="{{item.type === 'draw' && item.exampleImage}}" class="draw-example-container">
+        <image src="{{item.exampleImage}}" mode="aspectFit" class="draw-example-image" />
+        <text class="image-caption">示例图</text>
+      </view>
+      
+      <!-- 选项列表 -->
+      <view wx:if="{{item.type === 'single' || item.type === 'multiple'}}" class="options-container">
+        <view wx:for="{{item.options}}" wx:for-item="option" wx:for-index="optionIndex" wx:key="optionIndex" class="option-item">
+          <text class="option-letter">{{letters[optionIndex]}}.</text>
+          <text class="option-text">{{option}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 添加问题 -->
+  <view class="section-card">
+    <text class="section-title">添加问题</text>
+    <view class="question-types">
+      <button class="type-btn" bindtap="addQuestionToModule" data-type="single">单选题</button>
+      <button class="type-btn" bindtap="addQuestionToModule" data-type="multiple">多选题</button>
+      <button class="type-btn" bindtap="addQuestionToModule" data-type="text">问答题</button>
+      <button class="type-btn" bindtap="addQuestionToModule" data-type="blank">填空题</button>
+      <button class="type-btn" bindtap="addQuestionToModule" data-type="draw">画图题</button>
+      <button class="type-btn" bindtap="addQuestionToModule" data-type="matrix">勾选题</button>
+    </view>
+  </view>
+  
+  <!-- 返回按钮 -->
+  <view class="action-buttons">
+    <button class="back-btn" bindtap="goBack">返回问卷编辑</button>
+  </view>
+</view>

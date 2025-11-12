@@ -1,0 +1,172 @@
+/* pages/medical-researcher/questionnaire/questionnaire.wxss */
+.container {
+  padding: 30rpx;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* 顶部区域 */
+.header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30rpx;
+}
+
+.search-box {
+  position: relative;
+  margin-bottom: 30rpx;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36rpx;
+  height: 36rpx;
+  z-index: 2;
+}
+
+.search-box input {
+  height: 80rpx;
+  padding: 0 70rpx;
+  background: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.05);
+}
+
+.placeholder {
+  color: #c0c4cc;
+}
+
+.review-btn {
+  background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(54, 209, 220, 0.3);
+}
+
+/* 列表容器 */
+.list-container {
+  height: calc(100vh - 260rpx);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-image {
+  width: 300rpx;
+  height: 300rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+/* 列表项 */
+.list-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.item-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.item-status-btn {
+  font-size: 24rpx;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  border: none;
+  min-width: auto;
+  line-height: normal;
+}
+
+.item-status-btn::after {
+  border: none;
+}
+
+.published {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.draft {
+  background: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.item-meta {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+
+/* 操作按钮 */
+.item-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15rpx;
+}
+
+.action-btn {
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 25rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  background: #f5f7fa;
+  color: #606266;
+  border: none;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.view {
+  background: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+}
+
+.edit {
+  background: rgba(255, 152, 0, 0.1);
+  color: #FF9800;
+}
+
+.export {
+  background: rgba(156, 39, 176, 0.1);
+  color: #9C27B0;
+}
+
+.delete {
+  background: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}

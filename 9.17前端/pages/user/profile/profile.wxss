@@ -1,0 +1,194 @@
+.profile-container {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f0f5ff 0%, #e6f0ff 100%);
+  padding: 30rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 顶部导航 */
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+  padding-top: 20rpx;
+}
+
+.back-btn {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.08);
+}
+
+.back-btn image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.header-title {
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #2d3748;
+  margin-left: 30rpx;
+}
+
+/* 个人信息卡片 */
+.profile-card {
+  background-color: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.05);
+  margin-bottom: 40rpx;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.avatar {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  background-color: #f0f7ff;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  border: 3rpx solid #e1edff;
+}
+
+.edit-avatar {
+  font-size: 26rpx;
+  color: #5a7eb5;
+}
+
+/* 表单样式 */
+.form-section {
+  margin-top: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 30rpx;
+  color: #4a5568;
+  margin-bottom: 20rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  height: 90rpx;
+  padding: 0 30rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  background: #f8fafc;
+}
+
+.gender-group {
+  display: flex;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  margin-right: 60rpx;
+  font-size: 30rpx;
+}
+
+.radio-label text {
+  margin-left: 10rpx;
+}
+
+/* 保存按钮 */
+.save-btn {
+  background: linear-gradient(135deg, #2c7be5 0%, #1a56db 100%);
+  color: white;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-top: 40rpx;
+  box-shadow: 0 8rpx 20rpx rgba(44, 123, 229, 0.3);
+}
+
+/* 反馈卡片 */
+.feedback-card {
+  background-color: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #2d3748;
+  margin-bottom: 30rpx;
+  display: block;
+}
+
+.feedback-input {
+  height: 300rpx;
+  width: 100%;
+  padding: 30rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background: #f8fafc;
+  margin-bottom: 30rpx;
+  box-sizing: border-box;
+}
+
+.feedback-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.char-count {
+  font-size: 26rpx;
+  color: #a0aec0;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  padding: 0 40rpx;
+}
+
+/* 错误提示样式 */
+.error-text {
+  color: #e53e3e;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  display: block;
+}
+
+/* 动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

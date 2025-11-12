@@ -1,0 +1,70 @@
+<!-- pages/admin/questionnaire/draw-question/draw-question.wxml -->
+<view class="container">
+  <view class="edit-container">
+    <!-- 问题标题区域 -->
+    <view class="section-header">
+      <text class="section-title">问题标题</text>
+    </view>
+    <input 
+      class="title-input" 
+      placeholder="请输入问题标题" 
+      bindinput="onTitleInput" 
+      value="{{question.title}}"
+    />
+
+    <!-- 例图上传区域 -->
+    <view class="section-header">
+      <text class="section-title">上传例图</text>
+    </view>
+    <view class="upload-container">
+      <view class="upload-btn" bindtap="uploadImage">
+        <image class="upload-icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTk5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48bGluZSB4MT0iMTIiIHkxPSIzMCIgeDI9IjM2IiB5Mj0iMzAiLz48bGluZSB4MT0iMjQiIHkxPSIxNiIgeDI9IjI0IiB5Mj0iMzAiLz48cGF0aCBkPSJNMjQgOGgtMnY0aDR2LTRoLTJ6bTAgMThoLTJ2NGg0di00aC0yek00OCAyNGMwIDEyLjEyLTkuODYgMjItMjIgMjJzLTIyLTkuODYtMjItMjIgOS44Ni0yMiAyMi0yMiAyMiA5Ljg2IDIyIDIyem0tMjQtOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptMCAxOGMzLjMxNCAwIDYtMi42ODYgNi02cy0yLjY4Ni02LTYtNi02IDIuNjg2LTYgNiAyLjY4NiA2IDYgNnoiLz48L3N2Zz4="></image>
+      </view>
+      <text class="upload-text">点击上传例图</text>
+      <image class="preview-image" src="{{imageUrl}}" wx:if="{{imageUrl}}" mode="aspectFit"></image>
+    </view>
+
+    <!-- 提示句区域 -->
+    <view class="section-header">
+      <text class="section-title">提示句</text>
+    </view>
+    <view class="prompt-container">
+      <text class="prompt-text">请画出示例中的图案</text>
+    </view>
+
+    <!-- 画板区域 -->
+    <view class="section-header">
+      <text class="section-title">画板</text>
+      <text class="hint-text">点击开始绘制</text>
+    </view>
+    <view class="canvas-container">
+      <canvas type="2d" id="myCanvas" class="canvas" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></canvas>
+    </view>
+
+    <!-- 工具栏 -->
+    <view class="toolbar">
+      <view class="tool-group">
+        <text>颜色:</text>
+        <view class="color-btn active" style="background-color: #000000;" data-color="#000000" bindtap="selectColor"></view>
+        <view class="color-btn" style="background-color: #FF0000;" data-color="#FF0000" bindtap="selectColor"></view>
+        <view class="color-btn" style="background-color: #00FF00;" data-color="#00FF00" bindtap="selectColor"></view>
+        <view class="color-btn" style="background-color: #0000FF;" data-color="#0000FF" bindtap="selectColor"></view>
+      </view>
+      <view class="tool-group">
+        <text>线宽:</text>
+        <view class="line-width-btn" style="height: 2rpx;" data-width="2" bindtap="selectLineWidth"></view>
+        <view class="line-width-btn" style="height: 5rpx;" data-width="5" bindtap="selectLineWidth"></view>
+        <view class="line-width-btn" style="height: 10rpx;" data-width="10" bindtap="selectLineWidth"></view>
+      </view>
+      <view class="tool-group">
+        <view class="action-btn undo-btn" bindtap="undo">撤销</view>
+        <view class="action-btn clear-btn" bindtap="clearCanvas">清空</view>
+      </view>
+    </view>
+
+    <!-- 保存按钮 -->
+    <view class="save-container">
+      <button class="save-btn" bindtap="saveQuestion">保存问题</button>
+    </view>
+  </view>
+</view>

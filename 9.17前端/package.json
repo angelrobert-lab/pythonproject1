@@ -1,0 +1,14 @@
+{
+  "name": "questionnaire-system",
+  "version": "1.0.0",
+  "description": "问卷系统（有身份核验）",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "miniprogram-ci": "^2.1.26"
+  }
+}

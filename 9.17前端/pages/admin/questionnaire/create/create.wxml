@@ -1,0 +1,335 @@
+<!-- pages/admin/questionnaire/create/create.wxml -->
+
+<view class="container">
+  <!-- 回到顶部按钮 -->
+  <view class="back-to-top-btn" bindtap="backToTop">
+    <text class="btn-text">↑</text>
+  </view>
+
+  <!-- 回到底部按钮 -->
+  <view class="back-to-bottom-btn" bindtap="backToBottom">
+    <text class="btn-text">↓</text>
+  </view>
+
+  <!-- 问卷标题区块 -->
+  <view class="section-card">
+    <text class="section-title">问卷标题</text>
+    <input class="input center-input" placeholder="请输入问卷标题"
+      bindinput="onTitleInput" value="{{questionnaireTitle}}"/>
+  </view>
+
+  <!-- 问卷描述区块 -->
+  <view class="section-card">
+    <text class="section-title">问卷描述</text>
+    <textarea class="textarea center-input"
+      placeholder="请输入问卷描述" bindinput="onDescriptionInput"
+      value="{{questionnaireDescription}}"/>
+  </view>
+
+  <!-- 添加模块按钮（在添加问题栏的第一个） -->
+  <view class="section-card">
+    <text class="section-title">添加模块</text>
+    <button class="action-btn add-module" bindtap="addModule">添加模块</button>
+  </view>
+  
+  <!-- 模块管理区块 -->
+  <view class="section-card">
+    <text class="section-title">模块管理</text>
+    
+    <view wx:if="{{modules.length === 0}}" class="empty-hint">
+      <image src="/images/empty.png" class="empty-icon" />
+      <text>暂无模块，请先添加模块</text>
+    </view>
+    
+    <view wx:for="{{modules}}" wx:key="id" class="module-item">
+      <text class="module-name">{{item.name}} ({{item.questionCount}}题)</text>
+      <button class="action-btn add-more" bindtap="continueAddModule" data-index="{{index}}">继续添加</button>
+    </view>
+    
+    <view wx:if="{{currentModuleIndex >= 0}}" class="current-module">
+      <text class="current-module-text">当前模块：{{modules[currentModuleIndex].name}}</text>
+    </view>
+  </view>
+
+  <!-- 问题列表区块 -->
+  <view class="section-card">
+    <text class="section-title">问题列表</text>
+    
+    <view wx:if="{{questions.length === 0}}" class="empty-hint">
+      <image src="/images/empty.png" class="empty-icon" />
+      <text>暂无问题，请添加问题</text>
+    </view>
+    
+    <view wx:if="{{currentModuleIndex < 0 && questions.length === 0}}" class="module-warning">
+      <text class="warning-text">请先添加模块，再添加问题</text>
+    </view>
+    
+    <view wx:for="{{questions}}" wx:key="index" class="question-item"
+      id="question-item-{{index}}">
+      
+      <!-- 模块分割线 -->
+      <view wx:if="{{index > 0 && questions[index-1].moduleIndex !== item.moduleIndex}}" 
+            class="module-divider" data-module-name="{{item.moduleName}}">
+      </view>
+      <view wx:elif="{{index === 0 && item.moduleIndex >= 0}}" 
+            class="module-divider" data-module-name="{{item.moduleName}}">
+      </view>
+      
+      <view class="question-header">
+        <text class="question-type">{{item.type === 'single' ? '单选题'
+          : item.type === 'multiple' ? '多选题' : item.type === 'text' ?
+          '问答题' : item.type === 'blank' ? '填空题' : item.type ===
+          'draw' ? '画图题(' + item.subTypeName + ')' : item.type === 'matrix' ? '勾选题' : 
+          '其他题型'}}</text>
+        <text class="question-number">{{index + 1}}. {{item.title}}</text>
+        <text wx:if="{{item.moduleName}}" class="module-tag">{{item.moduleName}}</text>
+        <view class="question-actions">
+          <button class="action-btn edit" bindtap="editQuestion"
+            data-index="{{index}}">编辑</button>
+          <button class="action-btn delete" bindtap="deleteQuestion"
+            data-index="{{index}}">删除</button>
+        </view>
+      </view>
+
+      <!-- 单选题、多选题和勾选题图片 -->
+      <view wx:if="{{(item.type === 'single' || item.type === 'multiple' || item.type === 'matrix') && item.imageUrl}}" class="draw-example-container">
+        <image src="{{item.imageUrl}}" mode="aspectFit"
+          class="draw-example-image" />
+        <text class="image-caption">示例图</text>
+      </view>
+
+      <!-- 画图题示例图片 -->
+      <view wx:if="{{item.type === 'draw' && item.exampleImage}}"
+        class="draw-example-container">
+        <image src="{{item.exampleImage}}" mode="aspectFit"
+          class="draw-example-image" />
+        <text class="image-caption">示例图</text>
+      </view>
+
+      <!-- 画钟表题提示句和画板内容 -->
+      <view wx:if="{{item.type === 'draw' && item.subType === 'clock'}}" class="clock-prompt-container">
+        <text class="prompt-title">提示句：</text>
+        <text class="prompt-content">请画出{{item.hour ||
+          'X'}}点{{item.timeRelation}}{{item.minute || 'X'}}分</text>
+        <view class="prompt-options">
+          <text wx:if="{{item.showOutline}}"
+            class="option-tag">轮廓</text>
+          <text wx:if="{{item.showNumbers}}"
+            class="option-tag">数字</text>
+          <text wx:if="{{item.showHands}}" class="option-tag">指针</text>
+        </view>
+
+        <!-- 画板内容预览 -->
+        <view class="drawing-preview-container">
+          <text class="preview-title">画板预览：</text>
+          <image
+            src="{{item.drawingData}}"
+            mode="aspectFit"
+            class="drawing-preview"
+            wx:if="{{item.drawingData}}"
+          />
+          <text wx:else class="empty-drawing">暂无绘制内容</text>
+        </view>
+      </view>
+
+      <!-- 画图题提示句和画板内容 -->
+      <view wx:if="{{item.type === 'draw' && item.subType === 'normal'}}" class="draw-prompt-container">
+        <text class="prompt-title">提示句：</text>
+        <text class="prompt-content">{{item.prompt ||
+          '请根据题目要求完成画图'}}</text>
+        <!-- 画板内容预览 -->
+        <view class="drawing-preview-container">
+          <text class="preview-title">画板预览：</text>
+          <image
+            src="{{item.drawingData}}"
+            mode="aspectFit"
+            class="drawing-preview"
+            wx:if="{{item.drawingData}}"
+          />
+          <text wx:else class="empty-drawing">暂无绘制内容</text>
+        </view>
+      </view>
+
+      <!-- 画立体图题提示句和画板内容 -->
+      <view wx:if="{{item.type === 'draw' && item.subType === '3d'}}"
+        class="draw-3d-prompt-container">
+        <text class="prompt-title">提示句：</text>
+        <text class="prompt-content">{{item.prompt ||
+          '请根据题目要求完成立体图绘制'}}</text>
+        <!-- 画板内容预览 -->
+        <view class="drawing-preview-container">
+          <text class="preview-title">画板预览：</text>
+          <image
+            src="{{item.drawingData}}"
+            mode="aspectFit"
+            class="drawing-preview"
+            wx:if="{{item.drawingData}}"
+          />
+          <text wx:else class="empty-drawing">暂无绘制内容</text>
+        </view>
+      </view>
+
+      <!-- 画图案题提示句和画板内容 -->
+      <view wx:if="{{item.type === 'draw' && item.subType === 'pattern'}}" class="draw-pattern-prompt-container">
+        <text class="prompt-title">提示句：</text>
+        <text class="prompt-content">{{item.prompt ||
+          '请根据题目要求完成图案绘制'}}</text>
+        <!-- 画板内容预览 -->
+        <view class="drawing-preview-container">
+          <text class="preview-title">画板预览：</text>
+          <image
+            src="{{item.drawingData}}"
+            mode="aspectFit"
+            class="drawing-preview"
+            wx:if="{{item.drawingData}}"
+          />
+          <text wx:else class="empty-drawing">暂无绘制内容</text>
+        </view>
+      </view>
+
+      <!-- 连线题提示句 -->
+      <view wx:if="{{item.type === 'draw' && item.subType === 'connect'}}" class="connect-prompt-container">
+        <text class="prompt-title">提示句：</text>
+        <text class="prompt-content">{{item.prompt ||
+          '请依照例图所示对本题进行1➡甲➡2➡乙......的顺序连线'}}</text>
+        <!-- 画板内容预览 -->
+        <view class="drawing-preview-container">
+          <text class="preview-title">画板预览：</text>
+          <image
+            src="{{item.drawingData}}"
+            mode="aspectFit"
+            class="drawing-preview"
+            wx:if="{{item.drawingData}}"
+          />
+          <text wx:else class="empty-drawing">暂无绘制内容</text>
+        </view>
+      </view>
+
+      <!-- 填空题回答框 -->
+      <view wx:if="{{item.type === 'blank'}}"
+        class="blanks-answer-container">
+        <view wx:for="{{item.blanks}}" wx:for-item="blank"
+          wx:for-index="blankIndex" wx:key="blankIndex"
+          class="blank-answer-item">
+          <text class="blank-label">回答{{blankIndex + 1}}：</text>
+          <input
+            class="blank-input"
+            placeholder="请输入回答内容"
+            value="{{blank}}"
+            disabled
+          />
+        </view>
+      </view>
+      
+      <!-- 勾选题展示 -->
+      <view wx:if="{{item.type === 'matrix'}}" class="matrix-container">
+        <view class="matrix-edit-container">
+          <!-- 左上角固定单元格 -->
+          <view class="fixed-corner"></view>
+          
+          <!-- 列标题区域 (可横向滚动) -->
+          <scroll-view class="matrix-header-scroll" scroll-x="{{true}}">
+            <view class="matrix-header">
+              <view wx:for="{{item.matrix.colHeaders}}" wx:key="col-{{index}}" class="header-cell">
+                <text class="col-text">{{item}}</text>
+              </view>
+            </view>
+          </scroll-view>
+          
+          <!-- 行标题和内容区域 (可纵向滚动) -->
+          <scroll-view class="matrix-body-scroll" scroll-y="{{true}}">
+            <view wx:for="{{item.matrix.rowHeaders}}" wx:key="row-{{index}}" class="matrix-row">
+              <!-- 行标题 -->
+              <view class="row-header">
+                <text class="row-text">{{item}}</text>
+              </view>
+              
+              <!-- 单元格区域 (可横向滚动) -->
+              <scroll-view class="matrix-cells-scroll" scroll-x="{{true}}">
+                <view class="matrix-row-cells">
+                  <view wx:for="{{item.matrix.colHeaders}}" wx:for-item="colItem" wx:for-index="colIndex" wx:key="colIndex" class="matrix-cell">
+                    <view class="checkbox {{item.matrix.selectedCells[index][colIndex] ? 'checked' : ''}}"></view>
+                  </view>
+                </view>
+              </scroll-view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+
+      <view wx:if="{{item.type === 'single' || item.type === 'multiple'}}" class="options-container">
+        <view wx:for="{{item.options}}" wx:key="optionIndex"
+          wx:for-item="option" wx:for-index="optionIndex"
+          class="option-item">
+          <input class="option-letter-input"
+            value="{{letters[optionIndex]}}" disabled />
+          <view class="option-text-container">
+            <text class="option-text">{{option}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 问答题回答框 -->
+      <view wx:if="{{item.type === 'text'}}"
+        class="text-answer-container">
+        <textarea
+          class="text-answer"
+          placeholder="请输入回答内容"
+          value="{{item.answer || ''}}"
+          bindinput="onAnswerInput"
+          data-index="{{index}}"
+        ></textarea>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加问题区块 -->
+  <view class="section-card">
+    <text class="section-title">添加问题</text>
+    <view wx:if="{{currentModuleIndex < 0}}" class="module-warning">
+      <text class="warning-text">请先添加模块，再添加问题</text>
+    </view>
+    <view class="question-types">
+      <button class="type-btn" bindtap="navigateToEditQuestion"
+        data-type="single">单选题</button>
+      <button class="type-btn" bindtap="navigateToEditQuestion"
+        data-type="multiple">多选题</button>
+      <button class="type-btn" bindtap="navigateToEditQuestion"
+        data-type="text">问答题</button>
+      <button class="type-btn" bindtap="navigateToEditQuestion"
+        data-type="blank">填空题</button>
+      <button class="type-btn" bindtap="navigateToEditQuestion"
+        data-type="draw">画图题</button>
+      <button class="type-btn" bindtap="navigateToEditQuestion"
+        data-type="matrix">勾选题</button>
+    </view>
+  </view>
+
+  <!-- 模块对话框 -->
+  <view wx:if="{{showModuleDialog}}" class="modal-overlay" bindtap="closeModuleDialog">
+    <view class="modal-content" catchtap="preventClose">
+      <view class="modal-header">
+        <text class="modal-title">添加模块</text>
+        <text class="modal-close" bindtap="closeModuleDialog">×</text>
+      </view>
+      <view class="modal-body">
+        <input class="modal-input" placeholder="请输入模块名称" 
+               value="{{newModuleName}}" bindinput="onModuleNameInput" />
+      </view>
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="closeModuleDialog">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmAddModule">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮区域 -->
+  <view class="action-buttons">
+    <button class="preview-btn"
+      bindtap="previewQuestionnaire">预览</button>
+    <button class="save-btn"
+      bindtap="saveQuestionnaire">保存</button>
+    <button class="publish-btn"
+      bindtap="publishQuestionnaire">发布</button>
+  </view>
+</view>

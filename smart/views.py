@@ -71,9 +71,28 @@ def login(request):
                 user = serializer.validated_data['user']
                 role_from_request = data.get('role')
 
+                role_alias = {
+                    'user': 'ordinary_user',
+                    'admin': 'system_admin',
+                    'researcher': 'medical_researcher',
+                    'surveyor': 'questionnaire_entrant',
+                    'ordinary_user': 'ordinary_user',
+                    'system_admin': 'system_admin',
+                    'medical_researcher': 'medical_researcher',
+                    'questionnaire_entrant': 'questionnaire_entrant'
+                }
+                role_from_request = role_alias.get(role_from_request, role_from_request)
+
                 if user.user_type != role_from_request and user.user_type != 'system_admin':
-                     return Response({'status': 'error', 'message': '用户角色权限不足'}, status=status.HTTP_403_FORBIDDEN)
-                
+                    logger.warning(
+                        f"登录角色不匹配: 用户 {user.username} (数据库={user.user_type}, 请求={role_from_request})"
+                    )
+                    return Response(
+                        {'status': 'error',
+                         'message': f'用户角色权限不足（当前: {user.user_type}, 请求: {role_from_request}）'},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+
                 token, created = Token.objects.get_or_create(user=user)
                 LoginLog.objects.create(user=user, role=role_from_request)
                 
@@ -174,6 +193,29 @@ class QuestionnaireViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
+
+    # 新增自定义 update 方法
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # 让 PUT 也支持部分更新（不会要求所有字段必传）
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        if not serializer.is_valid():
+            # 打印具体错误到控制台
+            print("PUT 验证失败：", serializer.errors)
+            # 返回详细错误信息给前端
+            return Response({
+                "status": "error",
+                "message": "问卷数据校验失败",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        # 成功后返回最新数据
+        return Response({
+            "status": "success",
+            "message": "问卷更新成功",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+
 
 
 class QuestionViewSet(viewsets.ModelViewSet):

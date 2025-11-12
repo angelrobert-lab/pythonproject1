@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="button-container">
+    <view class="btn gradient-btn" hover-class="btn-hover" bindtap="viewPublishedQuestionnaires">
+      <text class="btn-text">查看发布的问卷</text>
+    </view>
+    <view class="btn gradient-btn" hover-class="btn-hover" bindtap="viewCompletedQuestionnaires">
+      <text class="btn-text">查看已填写的问卷</text>
+    </view>
+  </view>
+</view>

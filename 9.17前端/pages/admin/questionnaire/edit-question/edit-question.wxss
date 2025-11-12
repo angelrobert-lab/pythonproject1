@@ -1,0 +1,508 @@
+/* pages/admin/questionnaire/edit-question/edit-question.wxss */
+
+/* 基础样式 */
+.container {
+  padding: 20rpx;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 100%;
+}
+
+/* 编辑容器 */
+.edit-container {
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 区域标题样式 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 30rpx 20rpx;
+  background-color: #fafafa;
+  border-bottom: 1rpx solid #f0f2f5;
+  margin: 10rpx 0;
+}
+
+.matrix-section {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.matrix-btn-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 15rpx;
+}
+
+.matrix-btn-container .add-option-btn {
+  margin-right: 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 添加选项按钮 */
+.add-option-btn {
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 20rpx;
+  background: #f0f8ff;
+  color: #1890ff;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+}
+
+/* 问题标题输入框 */
+.title-input {
+  height: 96rpx;
+  padding: 0 30rpx;
+  font-size: 30rpx;
+  color: #333;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f2f5;
+  margin: 10rpx 0;
+}
+
+/* 选项列表 */
+.options-list {
+  padding: 0 30rpx;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f0f2f5;
+}
+
+.option-item:last-child {
+  border-bottom: none;
+}
+
+/* 选项字母文本框样式 */
+.option-letter-input {
+  width: 60rpx;
+  height: 80rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1890ff;
+  border: 1rpx solid #d9d9d9;
+  border-radius: 8rpx;
+  text-align: center;
+  background-color: #f8f9fb;
+  margin-right: 15rpx;
+}
+
+/* 选项输入框 */
+.option-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: #333;
+  padding: 0 20rpx;
+  background: #f8f9fb;
+  border-radius: 8rpx;
+  margin-right: 15rpx;
+}
+
+/* 删除按钮 */
+.delete-btn {
+  width: 60rpx;
+  height: 60rpx;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.delete-icon {
+  width: 40rpx;
+  height: 40rpx;
+  opacity: 0.6;
+}
+
+/* 保存按钮区域 */
+.save-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.save-btn {
+  width: 80%;
+  height: 90rpx;
+  background-color: #007aff;
+  color: #fff;
+  border-radius: 45rpx;
+  font-size: 32rpx;
+  line-height: 90rpx;
+}
+
+/* 添加填空按钮 */
+.add-blank-btn {
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 20rpx;
+  background: #f0f8ff;
+  color: #1890ff;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+}
+
+/* 填空题列表 */
+.blanks-list {
+  padding: 0 30rpx;
+}
+
+.blank-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f0f2f5;
+}
+
+.blank-item:last-child {
+  border-bottom: none;
+}
+
+/* 填空题标签 */
+.blank-label {
+  font-size: 28rpx;
+  color: #1a1a1a;
+  margin-right: 20rpx;
+  white-space: nowrap;
+  width: 120rpx;
+  text-align: right;
+}
+
+/* 填空题输入框 */
+.blank-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: #333;
+  padding: 0 20rpx;
+  background: #f8f9fb;
+  border-radius: 8rpx;
+  margin-right: 15rpx;
+}
+
+/* 矩阵编辑容器样式 */
+.matrix-edit-container {
+  position: relative;
+  width: 90%;
+  overflow: hidden; /* 限制内部滚动 */
+  margin: 20rpx auto;
+  border: 1rpx solid #e8e8e8;
+  border-radius: 8rpx;
+}
+
+/* 矩阵头部滚动区域 */
+.matrix-header-scroll {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 矩阵主体滚动区域 */
+.matrix-body-scroll {
+  flex: 1;
+  overflow-y: auto;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 矩阵单元格滚动区域 */
+.matrix-cells-scroll {
+  flex: 1;
+  overflow-x: auto;
+  white-space: nowrap;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 矩阵部分的section-header样式 */
+.matrix-section {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.matrix-btn-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 15rpx;
+}
+
+.matrix-btn-container .add-option-btn {
+  margin-right: 20rpx;
+}
+
+/* 防止页面整体横向滚动 */
+.container {
+  overflow-x: hidden;
+}
+
+/* 图片上传容器 */
+.upload-container {
+  padding: 20rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fb;
+  border-bottom: 1rpx solid #f0f2f5;
+  margin: 10rpx 0;
+  border-radius: 16rpx;
+  border: 1rpx solid #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 上传按钮 */
+.upload-btn {
+  width: 160rpx;
+  height: 160rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e6f7ff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx dashed #1890ff;
+}
+
+/* 上传图标 */
+.upload-icon {
+  width: 80rpx;
+  height: 80rpx;
+  color: #1890ff;
+}
+
+/* 上传文本 */
+.upload-text {
+  font-size: 26rpx;
+  color: #718096;
+  margin-bottom: 20rpx;
+}
+
+/* 已上传图片 */
+.uploaded-image {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 8rpx;
+  margin-top: 10rpx;
+  background-color: #fff;
+  border: 1rpx solid #e2e8f0;
+}
+
+/* 勾选题编辑样式 */
+.matrix-edit-container {
+  position: relative;
+  padding: 20rpx;
+  width: 90%;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 16rpx;
+  border: 1rpx solid #e2e8f0;
+  margin: 20rpx auto;
+  height: 400rpx;
+}
+
+/* 固定左上角单元格 */
+.fixed-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160rpx;
+  height: 70rpx;
+  background-color: #fafafa;
+  z-index: 30;
+  border-right: 1rpx solid #f0f2f5;
+  border-bottom: 1rpx solid #f0f2f5;
+}
+
+/* 列标题滚动区域 */
+.matrix-header-scroll {
+  position: absolute;
+  top: 0;
+  left: 160rpx;
+  right: 0;
+  height: 70rpx;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 20;
+  padding-right: 20rpx; /* 添加右侧内边距确保最后一列可以完全显示 */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.matrix-header {
+  display: flex;
+  background-color: #fff;
+  border-bottom: 1rpx solid #f0f2f5;
+  height: 70rpx;
+  width: max-content; /* 确保容器能够容纳所有列 */
+}
+
+/* 行标题和内容滚动区域 */
+.matrix-body-scroll {
+  position: absolute;
+  top: 70rpx;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 10;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.matrix-row {
+  display: flex;
+  height: 70rpx;
+  border-bottom: 1rpx solid #f0f2f5;
+}
+
+.row-header {
+  flex: 0 0 160rpx;
+  min-height: 70rpx;
+  display: flex;
+  align-items: center;
+  border-right: 1rpx solid #f0f2f5;
+  padding: 0 60rpx 0 10rpx;
+  position: relative;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* 单元格滚动区域 */
+.matrix-cells-scroll {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-right: 20rpx; /* 添加右侧内边距确保最后一列可以完全显示 */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.matrix-row-cells {
+  display: flex;
+  height: 100%;
+  width: max-content; /* 确保容器能够容纳所有列 */
+}
+
+.matrix-cell {
+  flex: 0 0 160rpx;
+  min-width: 0;
+  min-height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1rpx solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+/* 表头单元格 */
+.header-cell {
+  flex: 0 0 160rpx;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1rpx solid #f0f2f5;
+  position: relative;
+  padding: 0 60rpx 0 10rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.checkbox {
+  width: 32rpx;
+  height: 32rpx;
+  border: 2rpx solid #d9d9d9;
+  border-radius: 6rpx;
+  position: relative;
+}
+
+.checkbox.checked {
+  border-color: #1aad19;
+  background-color: #fff;
+}
+
+.checkbox.checked::after {
+  content: '';
+  position: absolute;
+  left: 6rpx;
+  top: 2rpx;
+  width: 14rpx;
+  height: 24rpx;
+  border: solid #1aad19;
+  border-width: 0 3rpx 3rpx 0;
+  transform: rotate(45deg);
+}
+
+/* 调整删除按钮大小 */
+.matrix-header .delete-btn,
+.row-header .delete-btn {
+  position: absolute;
+  top: 50%;
+  right: 5rpx;
+  transform: translateY(-50%);
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* 调整删除图标大小 */
+.delete-icon {
+  width: 35rpx;
+  height: 35rpx;
+  opacity: 0.8;
+}
+
+/* 列标题输入框 */
+.col-input {
+  width: 100%;
+  height: 60rpx;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-size: 24rpx;
+}
+
+/* 行标题输入框 */
+.row-input {
+  width: 100%;
+  height: 60rpx;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  font-size: 24rpx;
+}

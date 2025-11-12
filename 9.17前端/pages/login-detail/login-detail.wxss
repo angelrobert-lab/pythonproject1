@@ -1,0 +1,138 @@
+/* 页面整体样式 */
+.login-container {
+  padding: 30rpx;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 头部样式 */
+.header {
+  text-align: center;
+  padding: 60rpx 0 40rpx;
+}
+
+.logo {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 20rpx;
+  background-color: #2c7be5;
+  border-radius: 24rpx;
+  padding: 20rpx;
+}
+
+.title {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #2d3748;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #718096;
+}
+
+/* 卡片样式 */
+.card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.05);
+  margin-bottom: 40rpx;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 28rpx 30rpx;
+  background-color: #f7f9fc;
+  border-bottom: 1rpx solid #edf2f7;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+/* 表单样式 */
+.form-container {
+  padding: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #4a5568;
+  margin-bottom: 15rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  height: 90rpx;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  padding: 0 25rpx;
+  font-size: 30rpx;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  border-color: #2c7be5;
+}
+
+.input-placeholder {
+  color: #a0aec0;
+  font-size: 28rpx;
+}
+
+/* 登录按钮 */
+.login-btn {
+  background: linear-gradient(135deg, #2c7be5 0%, #1a56db 100%);
+  color: white;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-top: 20rpx;
+  box-shadow: 0 8rpx 20rpx rgba(44, 123, 229, 0.3);
+  transition: all 0.3s ease;
+}
+
+.login-btn.disabled {
+  background: #cbd5e0;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.login-btn:not(.disabled):active {
+  transform: translateY(4rpx);
+  box-shadow: 0 4rpx 10rpx rgba(44, 123, 229, 0.3);
+}
+
+/* 底部链接 */
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40rpx;
+}
+
+.link {
+  color: #2c7be5;
+  font-size: 28rpx;
+  text-decoration: underline;
+}
+
+/* 错误提示样式 */
+.error-tip {
+  font-size: 24rpx;
+  color: #e53e3e;
+  margin-top: 10rpx;
+  padding-left: 5rpx;
+}

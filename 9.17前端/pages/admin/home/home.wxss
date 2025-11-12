@@ -1,0 +1,264 @@
+.admin-container {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f0f5ff 0%, #e6f0ff 100%);
+  padding: 30rpx 30rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰 */
+.admin-container::before {
+  content: '';
+  position: absolute;
+  top: -200rpx;
+  right: -200rpx;
+  width: 600rpx;
+  height: 600rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(44, 123, 229, 0.08) 0%, rgba(44, 123, 229, 0.03) 100%);
+  z-index: 0;
+}
+
+/* 时间显示 */
+.time-display {
+  text-align: center;
+  margin: 40rpx 0 50rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.current-time {
+  font-size: 80rpx;
+  font-weight: 300;
+  color: #2c7be5;
+  letter-spacing: 4rpx;
+  display: block;
+  margin-bottom: 10rpx;
+  text-shadow: 0 4rpx 10rpx rgba(44, 123, 229, 0.2);
+}
+
+.current-date {
+  font-size: 28rpx;
+  color: #5a7eb5;
+  display: block;
+}
+
+/* 管理员信息卡片样式 */
+.admin-card {
+  background: linear-gradient(135deg, #2c7be5 0%, #1a56db 100%);
+  border-radius: 24rpx;
+  padding: 40rpx;
+  color: white;
+  margin-bottom: 50rpx;
+  box-shadow: 0 20rpx 40rpx rgba(44, 123, 229, 0.25);
+  position: relative;
+  z-index: 1;
+  animation: cardAppear 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.admin-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 20rpx;
+  margin-right: 30rpx;
+  border: 3rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.admin-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-name {
+  font-size: 42rpx;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+  letter-spacing: 1rpx;
+}
+
+.admin-role {
+  font-size: 28rpx;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  display: inline-block;
+  width: fit-content;
+}
+
+.admin-footer {
+  border-top: 1rpx solid rgba(255, 255, 255, 0.3);
+  padding-top: 30rpx;
+}
+
+.login-time {
+  font-size: 26rpx;
+  opacity: 0.9;
+  letter-spacing: 1rpx;
+}
+
+/* 功能卡片区域 - 调整为更合适的大小 */
+.function-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 35rpx; /* 缩小卡片间距 */
+  margin-bottom: 60rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.function-card {
+  height: 250rpx; /* 减小卡片高度 */
+  border-radius: 24rpx;
+  padding: 35rpx 30rpx; /* 减小内边距 */
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-hover {
+  transform: translateY(-8rpx); /* 减小悬停上移距离 */
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.15);
+}
+
+.card-questionnaire {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  animation: cardAppear 0.8s 0.2s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.card-profile {
+  background: linear-gradient(135deg, #9C27B0 0%, #6A1B9A 100%);
+  animation: cardAppear 0.8s 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.card-icon {
+  width: 70rpx; /* 减小图标容器大小 */
+  height: 70rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon image {
+  width: 40rpx; /* 减小图标大小 */
+  height: 40rpx;
+}
+
+.card-title {
+  font-size: 34rpx; /* 减小标题字号 */
+  font-weight: bold;
+  color: white;
+  margin: 10rpx 0 8rpx; /* 调整间距 */
+}
+
+.card-desc {
+  font-size: 26rpx; /* 减小描述字号 */
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4; /* 调整行高 */
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx; /* 减小顶部间距 */
+  padding-top: 15rpx; /* 减小内边距 */
+  border-top: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.card-footer text {
+  font-size: 26rpx; /* 减小底部文字大小 */
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card-footer image {
+  width: 26rpx; /* 减小箭头图标大小 */
+  height: 26rpx;
+  opacity: 0.7;
+}
+
+/* 退出按钮样式 */
+.logout-container {
+  padding: 0 20rpx;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1s ease-out;
+}
+
+.logout-btn {
+  background: #ffffff;
+  color: #e74c3c;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 45rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  box-shadow: 0 8rpx 25rpx rgba(231, 76, 60, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-hover {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 15rpx rgba(231, 76, 60, 0.25);
+}
+
+/* 装饰元素 */
+.function-card::after {
+  content: '';
+  position: absolute;
+  top: -40rpx; /* 调整位置 */
+  right: -40rpx;
+  width: 140rpx; /* 减小尺寸 */
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: -1;
+}
+
+.function-card::before {
+  content: '';
+  position: absolute;
+  bottom: -25rpx; /* 调整位置 */
+  left: -25rpx;
+  width: 90rpx; /* 减小尺寸 */
+  height: 90rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: -1;
+}
+
+/* 动画 */
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(50rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

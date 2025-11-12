@@ -1,0 +1,28 @@
+<!-- pages/admin/questionnaire/draw-type-select/draw-type-select.wxml -->
+<view class="container">
+  <view class="section-title">选择画图题型</view>
+
+  <view class="type-list">
+    <view class="type-item" bindtap="selectType" data-type="pattern" data-name="画图案">
+      <image src="/images/p1.png" class="type-image" mode="aspectFit" />
+      <text class="type-name">画图案</text>
+    </view>
+
+    <view class="type-item" bindtap="selectType" data-type="connection" data-name="连线题">
+      <image src="/images/p2.png" class="type-image" mode="aspectFit" />
+      <text class="type-name">连线题</text>
+    </view>
+
+    <view class="type-item" bindtap="selectType" data-type="3d" data-name="画立体图">
+      <image src="/images/p3.png" class="type-image" mode="aspectFit" />
+      <text class="type-name">画立体图</text>
+    </view>
+
+    <view class="type-item" bindtap="selectType" data-type="clock" data-name="画钟表">
+      <image src="/images/p4.png" class="type-image" mode="aspectFit" />
+      <text class="type-name">画钟表</text>
+    </view>
+  </view>
+
+  <button class="back-btn" bindtap="navigateBack">返回</button>
+</view>

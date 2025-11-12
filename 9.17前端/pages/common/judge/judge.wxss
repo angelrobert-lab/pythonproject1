@@ -1,0 +1,62 @@
+.container {
+  padding: 30rpx 30rpx;
+  background: linear-gradient(160deg, #f0f5ff 0%, #e6f0ff 100%);
+  min-height: 100vh;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 背景装饰 */
+.container::before {
+  content: '';
+  position: absolute;
+  top: -200rpx;
+  right: -200rpx;
+  width: 600rpx;
+  height: 600rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(44, 123, 229, 0.08) 0%, rgba(44, 123, 229, 0.03) 100%);
+  z-index: 0;
+}
+
+.button-container {
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+  padding: 0 40rpx;
+}
+
+.btn {
+  height: 120rpx;
+  border-radius: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.gradient-btn {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  transition: all 0.3s ease;
+}
+
+.gradient-btn.btn-hover {
+  transform: translateY(-5rpx);
+  box-shadow: 0 12rpx 25rpx rgba(76, 175, 80, 0.3);
+}
+
+.btn-text {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 500;
+  z-index: 1;
+}

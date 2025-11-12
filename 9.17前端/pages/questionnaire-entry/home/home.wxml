@@ -1,0 +1,55 @@
+<view class="entry-staff-container">
+  <!-- 顶部时间显示 -->
+  <view class="time-display">
+    <text class="current-time">{{currentTime}}</text>
+    <text class="current-date">{{currentDate}}</text>
+  </view>
+  
+  <!-- 问卷录入员信息卡片 -->
+  <view class="entry-staff-card">
+    <view class="entry-staff-header">
+      <image class="entry-staff-avatar" src="{{entryStaffInfo.avatar || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPjwvc3ZnPg=='}}" mode="aspectFill" />
+      <view class="entry-staff-info">
+        <text class="entry-staff-name">{{entryStaffInfo.name}}</text>
+        <text class="entry-staff-role">{{entryStaffInfo.role}}</text>
+      </view>
+    </view>
+    <view class="entry-staff-footer">
+      <text class="login-time">本次登录时间: {{entryStaffInfo.lastLogin}}</text>
+    </view>
+  </view>
+  
+  <!-- 功能卡片区域 -->
+  <view class="function-cards">
+    <!-- 量表问卷管理卡片 -->
+    <view class="function-card card-questionnaire" hover-class="card-hover" bindtap="goToQuestionnaire">
+      <view class="card-icon">
+        <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTQgMkg2YTIgMiAwIDAgMC0yIDJ2MTZhMiAyIDAgMCAwIDIgMmgxMmEyIDIgMCAwIDAgMi0yVjhsLTYtNnoiPjwvcGF0aD48cGF0aCBkPSJNMTQgMnY2aDZNMTYgMTNIOE0xNiAxN0g4TTggOWg4Ij48L3BhdGg+PC9zdmc+" />
+      </view>
+      <text class="card-title">量表问卷管理</text>
+      <text class="card-desc">创建、编辑和查看所有量表问卷</text>
+      <view class="card-footer">
+        <text>进入管理</text>
+        <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSA5bDcgNyA3LTciPjwvcGF0aD48L3N2Zz4=" />
+      </view>
+    </view>
+    
+    <!-- 个人中心卡片 -->
+    <view class="function-card card-profile" hover-class="card-hover" bindtap="goToProfile">
+      <view class="card-icon">
+        <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPjwvc3ZnPg==" />
+      </view>
+      <text class="card-title">个人中心</text>
+      <text class="card-desc">管理个人信息和账号设置</text>
+      <view class="card-footer">
+        <text>个人设置</text>
+        <image src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSA5bDcgNyA3LTciPjwvcGF0aD48L3N2Zz4=" />
+      </view>
+    </view>
+  </view>
+  
+  <!-- 退出登录按钮 -->
+  <view class="logout-container">
+    <button class="logout-btn" hover-class="btn-hover" bindtap="logout">退出登录</button>
+  </view>
+</view>

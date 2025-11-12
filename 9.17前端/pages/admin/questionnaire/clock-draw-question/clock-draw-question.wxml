@@ -1,0 +1,77 @@
+<!-- pages/admin/questionnaire/clock-draw-question/clock-draw-question.wxml -->
+<view class="container">
+  <view class="edit-container">
+    <!-- 问题标题区域 -->
+    <view class="section-header">
+      <text class="section-title">问题标题</text>
+    </view>
+    <input 
+      class="title-input" 
+      placeholder="请输入问题标题" 
+      bindinput="onTitleInput" 
+      value="{{question.title}}"
+    />
+
+    <!-- 提示句区域 -->
+    <view class="section-header">
+      <text class="section-title">提示句</text>
+    </view>
+    <view class="prompt-container">
+      <text class="prompt-text">请画出</text>
+      <input class="time-input" placeholder="数/汉/英" value="{{question.hour}}" bindinput="onHourInput" />
+      <text class="prompt-text">点</text>
+      <view class="relation-selector">
+        <view class="relation-option {{question.timeRelation === '过' ? 'active' : ''}}" bindtap="selectRelation" data-relation="过">过</view>
+        <view class="relation-option {{question.timeRelation === '差' ? 'active' : ''}}" bindtap="selectRelation" data-relation="差">差</view>
+      </view>
+      <input class="time-input" placeholder="数/汉/英" value="{{question.minute}}" bindinput="onMinuteInput" />
+      <text class="prompt-text">分</text>
+    </view>
+    <view class="options-container">
+      <view class="option-item" bindtap="toggleOutline">
+        <view class="checkbox {{question.showOutline ? 'checked' : ''}}"></view>
+        <text>轮廓</text>
+      </view>
+      <view class="option-item" bindtap="toggleNumbers">
+        <view class="checkbox {{question.showNumbers ? 'checked' : ''}}"></view>
+        <text>数字</text>
+      </view>
+      <view class="option-item" bindtap="toggleHands">
+        <view class="checkbox {{question.showHands ? 'checked' : ''}}"></view>
+        <text>指针</text>
+      </view>
+    </view>
+
+    <!-- 画板区域 -->
+    <view class="section-header">
+      <text class="section-title">画板</text>
+    </view>
+    <view class="canvas-container">
+      <canvas type="2d" id="myCanvas" class="canvas" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd"></canvas>
+    </view>
+
+    <!-- 工具栏 -->
+    <view class="toolbar">
+      <view>
+        <text>颜色:</text>
+        <view class="color-btn active" style="background-color: #000000;" data-color="#000000" bindtap="selectColor"></view>
+        <view class="color-btn" style="background-color: #FF0000;" data-color="#FF0000" bindtap="selectColor"></view>
+        <view class="color-btn" style="background-color: #00FF00;" data-color="#00FF00" bindtap="selectColor"></view>
+        <view class="color-btn" style="background-color: #0000FF;" data-color="#0000FF" bindtap="selectColor"></view>
+      </view>
+      <view class="line-width">
+        <text>线宽:</text>
+        <view class="line-width-btn" style="height: 2rpx;" data-width="2" bindtap="selectLineWidth"></view>
+        <view class="line-width-btn" style="height: 5rpx;" data-width="5" bindtap="selectLineWidth"></view>
+        <view class="line-width-btn" style="height: 10rpx;" data-width="10" bindtap="selectLineWidth"></view>
+      </view>
+      <view class="clear-btn" bindtap="clearCanvas">清空</view>
+      <view class="undo-btn" bindtap="undo">撤销</view>
+    </view>
+
+    <!-- 保存按钮 -->
+    <view class="save-container">
+      <button class="save-btn" bindtap="saveQuestion">保存问题</button>
+    </view>
+  </view>
+</view>
